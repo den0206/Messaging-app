@@ -8,6 +8,7 @@
 
 import Foundation
 import  UIKit
+import FirebaseFirestore
 
 //MARK: GLOBAL FUNCTIONS
 private let dateFormat = "yyyyMMddHHmmss"
@@ -41,5 +42,51 @@ func isValidEmail(_ string: String) -> Bool {
        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
        let result = emailTest.evaluate(with: string)
        return result
+}
+
+func timeElapsed(date: Date) -> String {
+    
+    let seconds = NSDate().timeIntervalSince(date)
+    
+    var elapsed: String?
+    
+    
+    if (seconds < 60) {
+        elapsed = "Just now"
+    } else if (seconds < 60 * 60) {
+        let minutes = Int(seconds / 60)
+        
+        var minText = "min"
+        if minutes > 1 {
+            minText = "mins"
+        }
+        elapsed = "\(minutes) \(minText)"
+        
+    } else if (seconds < 24 * 60 * 60) {
+        let hours = Int(seconds / (60 * 60))
+        var hourText = "hour"
+        if hours > 1 {
+            hourText = "hours"
+        }
+        elapsed = "\(hours) \(hourText)"
+    } else {
+        let currentDateFormater = dateFormatter()
+        currentDateFormater.dateFormat = "dd/MM/YYYY"
+        
+        elapsed = "\(currentDateFormater.string(from: date))"
+    }
+    
+    return elapsed!
+}
+
+// snapshot to NSDictionary
+
+func dictionaryFromSnapshots(snapshots : [DocumentSnapshot]) -> [NSDictionary] {
+    
+    var allMassages : [NSDictionary] = []
+    for snapshot in snapshots {
+        allMassages.append(snapshot.data() as! NSDictionary)
+    }
+    return allMassages
 }
 

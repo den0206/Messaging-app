@@ -210,7 +210,7 @@ func updateCurrentUserInFirestore(withValues : [String : Any], completion : @esc
         tempwithValues[kUPDATEDAT] = updateAt
         
         let userObject = (dictionary as! NSDictionary).mutableCopy() as! NSMutableDictionary
-        print(userObject)
+       
         userObject.setValuesForKeys(tempwithValues)
         
         firebaseReferences(.User).document(currentId).updateData(withValues) { (error) in

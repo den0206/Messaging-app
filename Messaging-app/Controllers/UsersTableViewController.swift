@@ -13,14 +13,20 @@ import Firebase
 class UsersTableViewController: UITableViewController {
     
     var allUsers : [FUser] = []
+    var filterUsers : [FUser] = []
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     var activityIndicator : NVActivityIndicatorView?
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Users"
         tableView.tableFooterView = UIView()
+        
+        configureSearchController()
         
         activityIndicator = NVActivityIndicatorView(frame: CGRect(x: tableView.frame.width / 2 - 30, y: tableView.frame.height / 2 - 30, width: 60.0, height: 60.0), type: .ballPulse, color: #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), padding: nil)
         
@@ -44,7 +50,11 @@ class UsersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        
+        if searchController.isActive  && searchController.searchBar.text != "" {
+            return filterUsers.count
+        }
+        return allUsers.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -55,9 +65,37 @@ class UsersTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! UsersTableViewCell
+        let user : FUser
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            user = filterUsers[indexPath.row]
+        } else {
+            user = allUsers[indexPath.row]
+        }
+        
+        cell.delegate = self
+        
+        cell.generateCell(fUser: user, indexPath: indexPath)
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        var user : FUser
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            user = filterUsers[indexPath.row]
+        } else {
+            user = allUsers[indexPath.row]
+        }
+        
+        startPrivateChat(user1: FUser.currentUser()!, user2: user)
+        
+    }
+    
+   
     
     //MARK: LoadUsers
     
@@ -107,7 +145,14 @@ class UsersTableViewController: UITableViewController {
         }
         
     }
+    
     //MARK: Helpers
+    
+    
+    @objc func cancel() {
+        
+        navigationController?.popViewController(animated: true)
+    }
     
     private func startIndicator() {
         
@@ -125,11 +170,58 @@ class UsersTableViewController: UITableViewController {
         }
     }
     
-
     
-    @objc func cancel() {
+    
+    
+}
+
+    //MARK: Search Controller && usersCellDelegate
+
+
+extension UsersTableViewController : UISearchResultsUpdating, UserstableViewCellDelegate {
+    
+    func avatartapped(indexPath: IndexPath) {
+        var user : FUser
         
-        navigationController?.popViewController(animated: true)
+        if searchController.isActive && searchController.searchBar.text != "" {
+            user  = filterUsers[indexPath.row]
+        } else {
+            user = allUsers[indexPath.row]
+        }
+        showProfile(fuser: user, indexpath: indexPath)
+        
+    }
+    
+    private func showProfile(fuser : FUser, indexpath :IndexPath) {
+        
+        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+        
+        profileVC.user = fuser
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+        
+    }
+    
+    
+    private func configureSearchController() {
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+    }
+    
+    private func filterContentForSearch(searchText : String) {
+        
+        filterUsers = allUsers.filter({ (user) -> Bool in
+            return user.firstName.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearch(searchText: searchController.searchBar.text!)
+        
     }
     
     
