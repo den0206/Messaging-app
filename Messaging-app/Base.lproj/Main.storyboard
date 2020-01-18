@@ -680,7 +680,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="70B-9p-LdE">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="oWp-vb-UEf"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="oWp-vb-UEf">
+                            <connections>
+                                <segue destination="DLH-Fj-L5A" kind="show" id="AXz-2Q-9CB"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="avatarImageView" destination="8on-Qk-vzQ" id="pGY-xO-7w9"/>
@@ -690,6 +694,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oK5-9n-Qqy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3486.9565217391305" y="598.66071428571422"/>
+        </scene>
+        <!--Edit User View Controller-->
+        <scene sceneID="yTq-He-Gla">
+            <objects>
+                <viewController id="DLH-Fj-L5A" customClass="EditUserViewController" customModule="Messaging_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XsL-iY-6MP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uwO-mu-W75">
+                                <rect key="frame" x="49" y="184" width="300" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MGG-34-Bbd">
+                                <rect key="frame" x="48" y="349" width="300" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iS9-1m-X5D">
+                                <rect key="frame" x="51" y="272" width="300" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <viewLayoutGuide key="safeArea" id="5cm-br-K5m"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="GkM-ud-UNJ" appends="YES" id="WAN-Rd-Elw"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" id="scE-9c-gN0">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="yUm-JM-mQa">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="DLH-Fj-L5A" id="KA2-FU-yIy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="emailTextField" destination="MGG-34-Bbd" id="stz-YG-oY6"/>
+                        <outlet property="firstNameTextField" destination="uwO-mu-W75" id="BuM-kG-HL5"/>
+                        <outlet property="lastNameTextField" destination="iS9-1m-X5D" id="MT4-RY-4dU"/>
+                        <outlet property="saveButtonOutlet" destination="yUm-JM-mQa" id="dTl-YL-Gcf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ugc-4J-1al" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="GkM-ud-UNJ">
+                    <connections>
+                        <action selector="backGroundTapped:" destination="DLH-Fj-L5A" id="0QQ-2q-pcz"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="4512" y="597"/>
         </scene>
         <!--Settings-->
         <scene sceneID="O5O-SQ-02q">

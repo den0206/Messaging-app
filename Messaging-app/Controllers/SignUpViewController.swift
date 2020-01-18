@@ -255,6 +255,8 @@ class SignUpViewController: UIViewController {
 
 }
 
+//MARK: Imagepicker
+
 extension SignUpViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc private func buttonTapped() {

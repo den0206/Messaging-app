@@ -17,11 +17,15 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.tableFooterView = UIView()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         if FUser.currentUser() != nil {
             setupUI()
         }
 
-  
     }
 
     // MARK: - Table view data source
@@ -42,6 +46,17 @@ class SettingTableViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return ""
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        if section == 0 {
+            return 0
+        }
+        return 30
+    }
     
     //MARK: IBActions
     

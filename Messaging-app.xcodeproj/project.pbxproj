@@ -30,6 +30,7 @@
 		3AD228D723D0834E00F4A5CA /* FUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228D623D0834E00F4A5CA /* FUser.swift */; };
 		3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228D823D0836600F4A5CA /* Constracts.swift */; };
 		3AD228DB23D0839500F4A5CA /* References.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228DA23D0839500F4A5CA /* References.swift */; };
+		3AF86A8E23D33F0500C3D5F8 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		3AD228D623D0834E00F4A5CA /* FUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FUser.swift; sourceTree = "<group>"; };
 		3AD228D823D0836600F4A5CA /* Constracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constracts.swift; sourceTree = "<group>"; };
 		3AD228DA23D0839500F4A5CA /* References.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = References.swift; sourceTree = "<group>"; };
+		3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 		96370212C10A4C0043BA89FE /* Pods-Messaging-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messaging-app.debug.xcconfig"; path = "Target Support Files/Pods-Messaging-app/Pods-Messaging-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +141,7 @@
 				3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */,
 				3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */,
 				3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */,
+				3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AF86A8E23D33F0500C3D5F8 /* EditUserViewController.swift in Sources */,
 				3AD228D523D080AA00F4A5CA /* HelperFunctions.swift in Sources */,
 				3A5B637823CDE99300676836 /* LoginViewController.swift in Sources */,
 				3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */,
