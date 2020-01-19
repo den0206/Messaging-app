@@ -14,6 +14,8 @@ class SettingTableViewController: UITableViewController {
     
     @IBOutlet weak var fullnameLabel: UILabel!
     
+    var tapGesture : UITapGestureRecognizer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,6 +26,10 @@ class SettingTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         if FUser.currentUser() != nil {
             setupUI()
+            
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(avatarTapped))
+            avatarImageView.isUserInteractionEnabled = true
+            avatarImageView.addGestureRecognizer(tapGesture)
         }
 
     }
@@ -94,6 +100,15 @@ class SettingTableViewController: UITableViewController {
         self.present(loginVC, animated: true, completion: nil)
     }
     
-
+    @objc func avatarTapped() {
+        
+        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+        profileVC.user = FUser.currentUser()
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+        
+    }
+    
+    
     
 }

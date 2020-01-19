@@ -7,15 +7,26 @@
 //
 
 import UIKit
-import  FirebaseFirestore
+import FirebaseFirestore
 
 class ChatsViewController: UIViewController {
     
+    
+    @IBOutlet weak var searchOptionView: UIView!
+    
+    @IBOutlet weak var searchTextField: UITextField!
+    
+    @IBOutlet weak var searchButtonOutlet: UIButton!
+    
+    @IBOutlet weak var hideButtonOutlet: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     var recentChats : [NSDictionary] = []
+    var filterdChats : [NSDictionary] = []
     
     var recentsListner : ListenerRegistration!
+    
+     let searchController = UISearchController(searchResultsController: nil)
     
 
     override func viewDidLoad() {
@@ -26,6 +37,14 @@ class ChatsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        
+        
+        
+        searchAreaConstraint()
         
 
     }
@@ -74,22 +93,50 @@ class ChatsViewController: UIViewController {
         navigationController?.pushViewController(usersVC, animated: true)
     }
     
+    @IBAction func searchButtonPressed(_ sender: Any) {
+        searchController.searchBar.searchTextField.text = searchTextField.text
+        filterContentForText(searchText: searchController.searchBar.searchTextField.text!)
+    }
+    
+    
+    @IBAction func hideButtonPressed(_ sender: Any) {
+        
+         animateSearchOptionIn()
+    }
+    
   
+    
+    
 }
+
+//MARK: tableView Delegare
 
 extension ChatsViewController : UITableViewDelegate, UITableViewDataSource{
    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recentChats.count
+        
+        if  searchTextField.text != "" {
+            return filterdChats.count
+        } else {
+            return recentChats.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         var recent : NSDictionary
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RecentsTableViewCell
         
-        recent = recentChats[indexPath.row]
+        if searchTextField.text != "" {
+            recent = filterdChats[indexPath.row]
+        } else {
+            recent = recentChats[indexPath.row]
+        }
+        
+        
         
         cell.delegate = self
         cell.generateCell(recentChat: recent, indexPath: indexPath)
@@ -102,6 +149,26 @@ extension ChatsViewController : UITableViewDelegate, UITableViewDataSource{
         return 100
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        var recent : NSDictionary
+        
+        if searchTextField.text != "" {
+            recent = filterdChats[indexPath.row]
+        } else {
+            recent = recentChats[indexPath.row]
+        }
+        
+        let messageVC = MessageViewController()
+        messageVC.chatRoomId = (recent[kCHATROOMID] as? String)!
+        messageVC.memberIds = (recent[kMEMBERS] as? [String])!
+        messageVC.membersToPush = (recent[kMEMBERSTOPUSH] as? [String])!
+        
+        navigationController?.pushViewController(messageVC, animated: true)
+        
+        
+    }
 
 }
 
@@ -113,7 +180,11 @@ extension ChatsViewController : RecentTableViewCellDelegate {
         
         var recent : NSDictionary!
         
-        recent = recentChats[indexpath.row]
+        if searchTextField.text != "" {
+            recent = filterdChats[indexpath.row]
+        } else {
+            recent = recentChats[indexpath.row]
+        }
         
         if recent[kTYPE] as! String == kPRIVATE {
             firebaseReferences(.User).document(recent[kWITHUSERUSERID] as! String).getDocument { (snapshot, error) in
@@ -140,6 +211,91 @@ extension ChatsViewController : RecentTableViewCellDelegate {
         navigationController?.pushViewController(profileVC, animated: true)
         
         
+    }
+    
+    
+    
+    
+    
+}
+
+extension ChatsViewController : UISearchResultsUpdating, UITextFieldDelegate{
+   
+    private func searchAreaConstraint() {
+    
+        searchOptionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: tableView.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        searchTextField.anchor(top: searchOptionView.safeAreaLayoutGuide.topAnchor, left: searchOptionView.leftAnchor, bottom: searchOptionView.centerYAnchor, right: searchOptionView.rightAnchor, paddingTop: 14, paddingLeft: 40, paddingBottom: 200, paddingRight: 20, width: 100, height: 40)
+       
+        searchTextField.placeholder = "Search User..."
+        
+        let stackView = UIStackView(arrangedSubviews: [searchButtonOutlet, hideButtonOutlet])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 30
+        stackView.distribution = .fillEqually
+        
+        searchOptionView.addSubview(stackView)
+        
+        stackView.anchor(top: searchTextField.bottomAnchor, left: searchOptionView.leftAnchor, bottom: searchOptionView.bottomAnchor, right: searchOptionView.rightAnchor, paddingTop: 10, paddingLeft: 30, paddingBottom: 10, paddingRight: 30, width: 0, height: 40)
+        
+        searchTextField.addTarget(self, action: #selector(valitation), for: .editingChanged)
+        searchTextField.returnKeyType = .search
+        searchTextField.delegate = self
+    }
+    
+    private func animateSearchOptionIn() {
+        
+        let widthConstraint = searchOptionView.widthAnchor.constraint(equalToConstant: 100)
+        let heightCofnstrait = searchOptionView.heightAnchor.constraint(equalToConstant: 100)
+        UIView.animate(withDuration: 0.5) {
+            self.searchOptionView.isHidden = !self.searchOptionView.isHidden
+            widthConstraint.isActive = false
+            heightCofnstrait.isActive = false
+            
+        }
+//        if self.searchOptionView.isHidden {
+//            self.searchOptionView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+//        } else {
+//
+//        }
+    }
+    
+    @objc func valitation() {
+        guard searchTextField.hasText else {
+            searchButtonOutlet.isEnabled = false
+            searchButtonOutlet.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            tableView.reloadData()
+            return
+        }
+        searchButtonOutlet.isEnabled = true
+        searchButtonOutlet.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+    
+    }
+    
+    //MARK: TextField Delegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        searchController.searchBar.searchTextField.text = searchTextField.text
+        filterContentForText(searchText: searchController.searchBar.searchTextField.text!)
+        return true
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForText(searchText: searchController.searchBar.text!)
+        
+    }
+    
+    func filterContentForText(searchText : String, scope : String = "All") {
+        
+        filterdChats = recentChats.filter({ (recentChat) -> Bool in
+            return (recentChat[kWITHUSERFULLNAME] as! String).lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+        print(filterdChats.count)
     }
     
     

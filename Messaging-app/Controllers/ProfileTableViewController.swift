@@ -25,6 +25,8 @@ class ProfileTableViewController: UITableViewController {
     
     @IBOutlet weak var cell3: UITableViewCell!
     
+
+    
     
     var user : FUser?
     
@@ -136,6 +138,8 @@ class ProfileTableViewController: UITableViewController {
             }
         }
     }
+    
+   
     
     
 

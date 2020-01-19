@@ -22,6 +22,7 @@
 		3AA8970E23D1D1DA00B3EE87 /* ChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */; };
 		3AA8971023D1D92A00B3EE87 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */; };
 		3AA8971223D1D95A00B3EE87 /* UsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8971123D1D95A00B3EE87 /* UsersTableViewCell.swift */; };
+		3ABA82A823D3DB660091DB23 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA82A723D3DB660091DB23 /* MessageViewController.swift */; };
 		3ABED37F23D29CD20040C90B /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */; };
 		3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */; };
 		3ACADA8623CF6D3300205AF5 /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */; };
@@ -52,6 +53,7 @@
 		3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewController.swift; sourceTree = "<group>"; };
 		3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
 		3AA8971123D1D95A00B3EE87 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
+		3ABA82A723D3DB660091DB23 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */,
 				3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */,
 				3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */,
+				3ABA82A723D3DB660091DB23 /* MessageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				3AA8971023D1D92A00B3EE87 /* UsersTableViewController.swift in Sources */,
 				3A5B636223CDD90200676836 /* SceneDelegate.swift in Sources */,
 				3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */,
+				3ABA82A823D3DB660091DB23 /* MessageViewController.swift in Sources */,
 				3A9AD9FB23D1C9AC000E4FB1 /* Camera.swift in Sources */,
 				3A5B637A23CDEB1B00676836 /* Extensions.swift in Sources */,
 				3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */,
