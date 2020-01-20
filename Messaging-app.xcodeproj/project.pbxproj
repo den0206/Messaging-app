@@ -10,7 +10,10 @@
 		0169E3C07DFFDA60DF20C977 /* Pods_Messaging_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B51287763451E9B76A1148F /* Pods_Messaging_app.framework */; };
 		3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */; };
 		3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22D74423D2CBAD00AEC8B8 /* Recent.swift */; };
+		3A359D6A23D5283400B0692F /* MessageViewController+Save&Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */; };
+		3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6B23D52C4800B0692F /* InComingMessage.swift */; };
 		3A46E01B23CDF16A008C3D07 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46E01A23CDF16A008C3D07 /* SignUpViewController.swift */; };
+		3A53292223D43501009DCEC6 /* OutGoingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53292123D43501009DCEC6 /* OutGoingMessage.swift */; };
 		3A5B636023CDD90200676836 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B635F23CDD90200676836 /* AppDelegate.swift */; };
 		3A5B636223CDD90200676836 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B636123CDD90200676836 /* SceneDelegate.swift */; };
 		3A5B636723CDD90200676836 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A5B636523CDD90200676836 /* Main.storyboard */; };
@@ -23,6 +26,7 @@
 		3AA8971023D1D92A00B3EE87 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */; };
 		3AA8971223D1D95A00B3EE87 /* UsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8971123D1D95A00B3EE87 /* UsersTableViewCell.swift */; };
 		3ABA82A823D3DB660091DB23 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA82A723D3DB660091DB23 /* MessageViewController.swift */; };
+		3ABD776A23D428D10031D990 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABD776923D428D10031D990 /* Message.swift */; };
 		3ABED37F23D29CD20040C90B /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */; };
 		3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */; };
 		3ACADA8623CF6D3300205AF5 /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */; };
@@ -39,7 +43,10 @@
 		1FE588E3701FCB8BEFBFF78D /* Pods-Messaging-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messaging-app.release.xcconfig"; path = "Target Support Files/Pods-Messaging-app/Pods-Messaging-app.release.xcconfig"; sourceTree = "<group>"; };
 		3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableViewCell.swift; sourceTree = "<group>"; };
 		3A22D74423D2CBAD00AEC8B8 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
+		3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewController+Save&Load.swift"; sourceTree = "<group>"; };
+		3A359D6B23D52C4800B0692F /* InComingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingMessage.swift; sourceTree = "<group>"; };
 		3A46E01A23CDF16A008C3D07 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		3A53292123D43501009DCEC6 /* OutGoingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutGoingMessage.swift; sourceTree = "<group>"; };
 		3A5B635C23CDD90200676836 /* Messaging-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Messaging-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5B635F23CDD90200676836 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5B636123CDD90200676836 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +61,7 @@
 		3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
 		3AA8971123D1D95A00B3EE87 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
 		3ABA82A723D3DB660091DB23 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		3ABD776923D428D10031D990 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
@@ -84,6 +92,15 @@
 				1B51287763451E9B76A1148F /* Pods_Messaging_app.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3A359D6823D527E600B0692F /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				3ABA82A723D3DB660091DB23 /* MessageViewController.swift */,
+				3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */,
+			);
+			path = Message;
 			sourceTree = "<group>";
 		};
 		3A5B635323CDD90200676836 = {
@@ -142,9 +159,9 @@
 				3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */,
 				3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */,
 				3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */,
+				3A359D6823D527E600B0692F /* Message */,
 				3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */,
 				3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */,
-				3ABA82A723D3DB660091DB23 /* MessageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -154,6 +171,9 @@
 			children = (
 				3AD228D623D0834E00F4A5CA /* FUser.swift */,
 				3A22D74423D2CBAD00AEC8B8 /* Recent.swift */,
+				3ABD776923D428D10031D990 /* Message.swift */,
+				3A53292123D43501009DCEC6 /* OutGoingMessage.swift */,
+				3A359D6B23D52C4800B0692F /* InComingMessage.swift */,
 				3A9AD9FA23D1C9AC000E4FB1 /* Camera.swift */,
 			);
 			path = Models;
@@ -299,20 +319,24 @@
 				3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */,
 				3ACADA8623CF6D3300205AF5 /* MainTabVC.swift in Sources */,
 				3AA8970E23D1D1DA00B3EE87 /* ChatsViewController.swift in Sources */,
+				3ABD776A23D428D10031D990 /* Message.swift in Sources */,
 				3AD228DB23D0839500F4A5CA /* References.swift in Sources */,
 				3AD228D723D0834E00F4A5CA /* FUser.swift in Sources */,
 				3ABED37F23D29CD20040C90B /* ProfileTableViewController.swift in Sources */,
 				3A5B636023CDD90200676836 /* AppDelegate.swift in Sources */,
 				3AA8971223D1D95A00B3EE87 /* UsersTableViewCell.swift in Sources */,
 				3AA8971023D1D92A00B3EE87 /* UsersTableViewController.swift in Sources */,
+				3A53292223D43501009DCEC6 /* OutGoingMessage.swift in Sources */,
 				3A5B636223CDD90200676836 /* SceneDelegate.swift in Sources */,
 				3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */,
 				3ABA82A823D3DB660091DB23 /* MessageViewController.swift in Sources */,
+				3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */,
 				3A9AD9FB23D1C9AC000E4FB1 /* Camera.swift in Sources */,
 				3A5B637A23CDEB1B00676836 /* Extensions.swift in Sources */,
 				3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */,
 				3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */,
 				3A46E01B23CDF16A008C3D07 /* SignUpViewController.swift in Sources */,
+				3A359D6A23D5283400B0692F /* MessageViewController+Save&Load.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

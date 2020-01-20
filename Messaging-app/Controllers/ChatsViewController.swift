@@ -79,7 +79,7 @@ class ChatsViewController: UIViewController {
                     }
                 }
                 self.tableView.reloadData()
-                print(self.recentChats.count)
+               
             }
         })
     }

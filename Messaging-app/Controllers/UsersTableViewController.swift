@@ -91,7 +91,16 @@ class UsersTableViewController: UITableViewController {
             user = allUsers[indexPath.row]
         }
         
-        startPrivateChat(user1: FUser.currentUser()!, user2: user)
+        if !checkBlockedtatus(withUser: user) {
+            let messageVC = MessageViewController()
+            messageVC.chatRoomId =  startPrivateChat(user1: FUser.currentUser()!, user2: user)
+            messageVC.membersToPush = [FUser.currentID(), user.objectId]
+            messageVC.memberIds = [FUser.currentID(), user.objectId]
+            messageVC.isGrouped = false
+            
+            navigationController?.pushViewController(messageVC, animated: true)
+        }
+        
         
     }
     
@@ -168,6 +177,10 @@ class UsersTableViewController: UITableViewController {
             activityIndicator?.removeFromSuperview()
             activityIndicator?.stopAnimating()
         }
+    }
+    
+    func checkBlockedtatus(withUser : FUser) -> Bool {
+        return withUser.blockedUsers.contains(FUser.currentID())
     }
     
     

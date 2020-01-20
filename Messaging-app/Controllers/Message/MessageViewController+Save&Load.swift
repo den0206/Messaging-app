@@ -1,0 +1,197 @@
+import UIKit
+import MessageKit
+import InputBarAccessoryView
+
+
+//MARK: Save & Load methods
+
+extension MessageViewController {
+    
+    func send_Message(text : String?, picture : UIImage?, location : String?, video : NSURL?, audio : String?) {
+        
+        var outGoingMessage : OutGiongMessage?
+        let currentUser = FUser.currentUser()!
+        
+        // text
+        if let text = text {
+            outGoingMessage = OutGiongMessage(message: text, senderId: currentUser.objectId, senderName: currentUser.firstName, status: kDELIVERED, type: kTEXT)
+        }
+        
+        // picture
+        
+        
+        // for Text & Location type
+        outGoingMessage?.sendMessage(chatRoomId: chatRoomId, messageDictionary: outGoingMessage!.messageDictionary, membersIds: memberIds, membersToPush: membersToPush)
+        
+    }
+    
+    //MARK: Load Message
+    func loadMessage() {
+        
+        // got last 11 -(no autolistner)
+        
+        firebaseReferences(.Message).document(FUser.currentID()).collection(chatRoomId).order(by: kDATE, descending: true).limit(to: 11).getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            let sorted = ((dictionaryFromSnapshots(snapshots: snapshot.documents)) as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: true)]) as! [NSDictionary]
+            
+            self.loadMessages = self.checkCorrectType(allMessages: sorted)
+            
+            self.insertMessage()
+            
+            DispatchQueue.main.async {
+                
+                self.messagesCollectionView.reloadData()
+                self.messagesCollectionView.scrollToBottom(animated: true)
+                sleep(1)
+                self.messagesCollectionView.isHidden = false
+            }
+            
+            
+            // listen New Chat
+            self.listenForNewChat()
+            
+
+        }
+    }
+}
+
+//MARK: Helpers
+
+extension MessageViewController {
+    
+    func configureInputView() {
+        messageInputBar.sendButton.tintColor = .darkGray
+        messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        messageInputBar.inputTextView.backgroundColor = .white
+    }
+    
+    func checkCorrectType(allMessages : [NSDictionary]) -> [NSDictionary] {
+        
+        var tempMessages = allMessages
+        
+        // Check type is Correct
+        for message in tempMessages {
+            if message[kTYPE]  != nil {
+                if !self.legitType.contains(message[kTYPE] as! String) {
+                    tempMessages.remove(at: tempMessages.firstIndex(of: message)!)
+                }
+            } else {
+                tempMessages.remove(at: tempMessages.firstIndex(of: message)!)
+            }
+        }
+        
+        return tempMessages
+    }
+    
+    func insertMessage() {
+        
+        maxMessageNumber = self.loadMessages.count - loadedMessageCount
+        minimumMessageNumber = maxMessageNumber - kNUMBEROFMESSAGES
+        
+        if minimumMessageNumber < 0 {
+            minimumMessageNumber = 0
+        }
+        
+        for i in minimumMessageNumber ..< maxMessageNumber {
+            let messageDictionary = loadMessages[i]
+            
+            // append Message lists
+            insertInitialMessage(messageDictionary: messageDictionary)
+            
+            loadedMessageCount += 1
+        }
+    }
+    
+    func insertInitialMessage(messageDictionary : NSDictionary) -> Bool {
+        
+        let inComingMessage = InComingMessage(_collectionView: self.messagesCollectionView)
+        
+        if isInComing(messageDictionary: messageDictionary) {
+            // add Read
+        }
+        
+        // return Message Model
+        let message = inComingMessage.createMessage(messageDIctionary: messageDictionary, chatRoomId: chatRoomId)
+        
+        if message != nil {
+            objectMessages.append(messageDictionary)
+            messageLists.append(message!)
+            
+            
+        }
+        
+        return isInComing(messageDictionary: messageDictionary)
+    }
+    
+    func isInComing(messageDictionary : NSDictionary) -> Bool{
+        
+        if FUser.currentID() == messageDictionary[kSENDERID] as! String {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func finishSendMessage() {
+        messageInputBar.inputTextView.text = String()
+        messageInputBar.invalidatePlugins()
+        
+        messageInputBar.sendButton.startAnimating()
+        messageInputBar.inputTextView.placeholder = "Sending..."
+        DispatchQueue.global(qos: .default).async {
+            // fake send request task
+            sleep(1)
+            DispatchQueue.main.async { [weak self] in
+                self?.messageInputBar.sendButton.stopAnimating()
+                self?.messageInputBar.inputTextView.placeholder = "Aa"
+                self?.messagesCollectionView.scrollToBottom(animated: true)
+            }
+        }
+        
+    }
+    
+    // New Chat Lioten
+    
+    func listenForNewChat() {
+        
+        var lastMessageDate = "0"
+        // chage Date To String
+        if loadMessages.count > 0 {
+            lastMessageDate = loadMessages.last![kDATE] as! String
+        }
+        
+        newChatListner = firebaseReferences(.Message).document(FUser.currentID()).collection(chatRoomId).whereField(kDATE, isGreaterThan: lastMessageDate).addSnapshotListener({ (snaphot, error) in
+            
+            guard let snapshot = snaphot else {return}
+            
+            if !snapshot.isEmpty {
+                
+                for diff in snapshot.documentChanges {
+                    if diff.type == .added {
+                        
+                        let itm = diff.document.data() as NSDictionary
+                        
+                        if let type = itm[kTYPE]{
+                            // check Correct Type
+                            if self.legitType.contains(type as! String) {
+                                
+                                if self.insertInitialMessage(messageDictionary: itm) {
+                                    
+                                }
+                                self.messagesCollectionView.reloadData()
+                                
+                            }
+                            
+                        }
+
+                    }
+                }
+                
+            }
+            
+        })
+        
+    }
+}
