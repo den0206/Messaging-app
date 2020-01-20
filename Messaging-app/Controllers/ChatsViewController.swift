@@ -12,12 +12,15 @@ import FirebaseFirestore
 class ChatsViewController: UIViewController {
     
     
-    @IBOutlet weak var searchOptionView: UIView!
+    @IBOutlet weak var searchOptionView: UIView! {
+        didSet {
+            searchOptionView.backgroundColor = .clear
+        }
+    }
     
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var searchButtonOutlet: UIButton!
-    
     @IBOutlet weak var hideButtonOutlet: UIButton!
     @IBOutlet weak var tableView: UITableView!
     

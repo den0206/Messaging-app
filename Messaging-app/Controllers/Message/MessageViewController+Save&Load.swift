@@ -7,6 +7,8 @@ import InputBarAccessoryView
 
 extension MessageViewController {
     
+    // Create OutGoing instance
+    
     func send_Message(text : String?, picture : UIImage?, location : String?, video : NSURL?, audio : String?) {
         
         var outGoingMessage : OutGiongMessage?
@@ -19,12 +21,37 @@ extension MessageViewController {
         
         // picture
         
+        if let pic = picture {
+            // uploadImage
+            uploadImage(image: pic, chatRoomId: chatRoomId, view: self.navigationController!.view) { (imagelink) in
+                
+                if imagelink != nil {
+                    let text = "\(kPICTURE)"
+                    
+                    // instance
+                    outGoingMessage = OutGiongMessage(message: text, pictureLink: imagelink!, senderId: currentUser.objectId, senderName: currentUser.firstName, status: kDELIVERED, type: kPICTURE)
+                    
+                    // save Database
+                    outGoingMessage?.sendMessage(chatRoomId: self.chatRoomId, messageDictionary: outGoingMessage!.messageDictionary, membersIds: self.memberIds, membersToPush: self.membersToPush)
+                    
+                    self.finishSendMessage()
+                }
+            }
+            // Back!
+            return
+            
+        }
+        
+
         
         // for Text & Location type
         outGoingMessage?.sendMessage(chatRoomId: chatRoomId, messageDictionary: outGoingMessage!.messageDictionary, membersIds: memberIds, membersToPush: membersToPush)
         
     }
     
+    func update_Message(messageDictionary : NSDictionary) {
+        
+    }
     //MARK: Load Message
     func loadMessage() {
         
@@ -41,7 +68,7 @@ extension MessageViewController {
             self.insertMessage()
             
             DispatchQueue.main.async {
-                
+                self.hideIndicator()
                 self.messagesCollectionView.reloadData()
                 self.messagesCollectionView.scrollToBottom(animated: true)
                 sleep(1)
@@ -61,11 +88,7 @@ extension MessageViewController {
 
 extension MessageViewController {
     
-    func configureInputView() {
-        messageInputBar.sendButton.tintColor = .darkGray
-        messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        messageInputBar.inputTextView.backgroundColor = .white
-    }
+   
     
     func checkCorrectType(allMessages : [NSDictionary]) -> [NSDictionary] {
         
@@ -109,7 +132,9 @@ extension MessageViewController {
         let inComingMessage = InComingMessage(_collectionView: self.messagesCollectionView)
         
         if isInComing(messageDictionary: messageDictionary) {
-            // add Read
+            
+            OutGiongMessage.updateMessage(messageId: messageDictionary[kMESSAGEID] as! String, chatRoomId: chatRoomId, membersIds: memberIds)
+            
         }
         
         // return Message Model
@@ -118,8 +143,6 @@ extension MessageViewController {
         if message != nil {
             objectMessages.append(messageDictionary)
             messageLists.append(message!)
-            
-            
         }
         
         return isInComing(messageDictionary: messageDictionary)
@@ -195,3 +218,5 @@ extension MessageViewController {
         
     }
 }
+
+

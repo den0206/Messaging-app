@@ -28,7 +28,7 @@ class InComingMessage {
         case kTEXT:
             message = textMessage(messageDictionary: messageDIctionary, chatRoomID: chatRoomId)
         case kPICTURE :
-            print("picture")
+            message = pictureMessae(messageDictionary: messageDIctionary, chatRoomId: chatRoomId)
         case kVIDEO :
             print("kVideo")
         case kLOCATION :
@@ -71,5 +71,36 @@ class InComingMessage {
         
         return Message(text: text, sender: Sender(senderId: userid!, displayName: name!), messageId: messageId!, date: date)
         
+    }
+    
+    //MARK: Picture
+    
+    func pictureMessae(messageDictionary : NSDictionary, chatRoomId : String) -> Message? {
+        
+        let name = messageDictionary[kSENDERNAME] as? String
+        let userid = messageDictionary[kSENDERID] as? String
+        let messageId = messageDictionary[kMESSAGEID] as? String
+        
+        var date : Date!
+        
+        if let created = messageDictionary[kDATE] {
+            if (created as! String).count !=  14 {
+                date = Date()
+            } else {
+                date = dateFormatter().date(from: created as! String)
+            }
+        } else {
+            date = Date()
+        }
+        
+        // download Image
+        let image = downLoadImage(imageLink: messageDictionary[kPICTURE] as! String)
+        
+        if image != nil {
+            return Message(image: image!, sender: Sender(senderId: userid!, displayName: name!), messageId: messageId!, date: date)
+        }
+        
+        return nil
+ 
     }
 }

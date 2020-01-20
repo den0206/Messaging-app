@@ -13,6 +13,7 @@ let userDefaults = UserDefaults.standard
 //NOTIFICATIONS
 public let USER_DID_LOGIN_NOTIFICATION = "UserDidLoginNotification"
 public let APP_STARTED_NOTIFICATION = "AppStartedNotification"
+public let kFILEREFERENCE = "gs://messaging-app-ef3aa.appspot.com"
 
 public let kBACKGROUBNDIMAGE = "backgroundImage"
 public let kSHOWAVATAR = "showAvatar"

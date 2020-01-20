@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0169E3C07DFFDA60DF20C977 /* Pods_Messaging_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B51287763451E9B76A1148F /* Pods_Messaging_app.framework */; };
 		3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */; };
+		3A1A25CF23D59A5500F949E7 /* downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1A25CE23D59A5500F949E7 /* downloader.swift */; };
 		3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22D74423D2CBAD00AEC8B8 /* Recent.swift */; };
 		3A359D6A23D5283400B0692F /* MessageViewController+Save&Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */; };
 		3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6B23D52C4800B0692F /* InComingMessage.swift */; };
@@ -42,6 +43,7 @@
 		1B51287763451E9B76A1148F /* Pods_Messaging_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messaging_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FE588E3701FCB8BEFBFF78D /* Pods-Messaging-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messaging-app.release.xcconfig"; path = "Target Support Files/Pods-Messaging-app/Pods-Messaging-app.release.xcconfig"; sourceTree = "<group>"; };
 		3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableViewCell.swift; sourceTree = "<group>"; };
+		3A1A25CE23D59A5500F949E7 /* downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = downloader.swift; sourceTree = "<group>"; };
 		3A22D74423D2CBAD00AEC8B8 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
 		3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewController+Save&Load.swift"; sourceTree = "<group>"; };
 		3A359D6B23D52C4800B0692F /* InComingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingMessage.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		3A5B637323CDDB5F00676836 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				3A1A25CE23D59A5500F949E7 /* downloader.swift */,
 				3A5B637923CDEB1B00676836 /* Extensions.swift */,
 				3AD228D423D080AA00F4A5CA /* HelperFunctions.swift */,
 				3AD228D823D0836600F4A5CA /* Constracts.swift */,
@@ -333,6 +336,7 @@
 				3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */,
 				3A9AD9FB23D1C9AC000E4FB1 /* Camera.swift in Sources */,
 				3A5B637A23CDEB1B00676836 /* Extensions.swift in Sources */,
+				3A1A25CF23D59A5500F949E7 /* downloader.swift in Sources */,
 				3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */,
 				3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */,
 				3A46E01B23CDF16A008C3D07 /* SignUpViewController.swift in Sources */,
@@ -491,7 +495,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mineo.jp.mac.pop.Messaging-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -510,7 +514,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mineo.jp.mac.pop.Messaging-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

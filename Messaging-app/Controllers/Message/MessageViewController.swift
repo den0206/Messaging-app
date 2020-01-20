@@ -10,6 +10,7 @@ import UIKit
 import MessageKit
 import InputBarAccessoryView
 import FirebaseFirestore
+import NVActivityIndicatorView
 
 class MessageViewController: MessagesViewController {
     
@@ -38,16 +39,24 @@ class MessageViewController: MessagesViewController {
     
     var avatarItems : NSMutableDictionary?
     var avatarImageDictionary : NSMutableDictionary?
-    
-    
+
     var isGrouped : Bool = false
     
 //    deinit {
 //        updatelistner?.remove()
 //    }
-
+    
+    //MARK: Activity Indicator
+    
+    var activityIndicator : NVActivityIndicatorView?
+    let randomRed: CGFloat = CGFloat(arc4random()) / CGFloat(UInt32.max)
+    let randomGreen: CGFloat = CGFloat(arc4random()) / CGFloat(UInt32.max)
+    let randomBlue: CGFloat = CGFloat(arc4random()) / CGFloat(UInt32.max)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         // delegate AREA
         messagesCollectionView.messagesDataSource = self
@@ -56,16 +65,58 @@ class MessageViewController: MessagesViewController {
         messagesCollectionView.messageCellDelegate = self
         
         messageInputBar.delegate = self
+        
+        // random BackGround
+        setRandomBackgroundColor()
+        
         hideCurrentUserAvatar()
         
         configureInputView()
+        
+        configureAccesary()
         
         loadMessage()
         
         
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        activityIndicator = NVActivityIndicatorView(frame: CGRect(x: view.frame.width / 2 - 30, y: view.frame.height / 2 - 30, width: 60.0, height: 60.0), type: .ballPulse, color: UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0), padding: nil)
+        
+        startIndicator()
+    }
+    
+    private func configureInputView() {
+        messageInputBar.sendButton.tintColor = .darkGray
+        messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        messageInputBar.inputTextView.backgroundColor = .white
+    }
+    
+    private func setRandomBackgroundColor() {
+        
+        
+        self.messagesCollectionView.backgroundColor = UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 0.6)
+    }
+    
+    func startIndicator() {
+        
+        if activityIndicator != nil {
+            self.messagesCollectionView.addSubview(activityIndicator!)
+            activityIndicator?.startAnimating()
+        }
+    }
+    
+    func hideIndicator() {
+        
+        if activityIndicator != nil {
+            activityIndicator?.removeFromSuperview()
+            activityIndicator?.stopAnimating()
+        }
+    }
+    
+    
 }
 
 
@@ -105,9 +156,6 @@ extension MessageViewController : MessagesDataSource {
     func messageTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         
         return NSAttributedString(string: MessageKitDateFormatter.shared.string(from: message.sentDate), attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
-        
-        //          let name = message.sender.displayName
-        //          return NSAttributedString(string: name, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)])
     }
     
     // メッセージの下に文字を表示（既読）
@@ -169,8 +217,9 @@ extension MessageViewController : MessagesDataSource {
 
 extension MessageViewController : MessagesLayoutDelegate {
     
+    
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        return 15
+        return 30
     }
     
     func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
@@ -238,6 +287,116 @@ extension MessageViewController : InputBarAccessoryViewDelegate {
         }
         // send animation
         finishSendMessage()
+    }
+    
+    func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
+        if text == "" {
+            // show mic
+            setAudioButton()
+            
+        } else {
+            messageInputBar.setStackViewItems([messageInputBar.sendButton], forStack: .right, animated: false)
+        }
+    }
+    
+}
+
+//MARK: Accesary & ImagePicker
+
+extension MessageViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    private func configureAccesary(){
+        
+        // configure Left button
+        
+        let optionItems = InputBarButtonItem(type: .system)
+        optionItems.tintColor = .darkGray
+        optionItems.image = UIImage(named: "clip")
+        
+        optionItems.setSize(CGSize(width: 60, height: 30), animated: true)
+        optionItems.addTarget(self, action: #selector(showOptions), for: .touchUpInside)
+        messageInputBar.leftStackView.alignment = .center
+        messageInputBar.setLeftStackViewWidthConstant(to: 50, animated: false)
+        messageInputBar.setStackViewItems([optionItems], forStack: .left, animated: true)
+        
+        //configure Right Button
+        setAudioButton()
+          
+    }
+    
+    @objc func showOptions() {
+        
+        let camera = Camera(delegate_: self)
+        let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // take picture or Video
+        let takePhotoVideo = UIAlertAction(title: "Camera", style: .default) { (action) in
+            print("take device")
+        }
+        
+        let showPhoto = UIAlertAction(title: "library", style: .default, handler: { (action) in
+            camera.PresentPhotoLibrary(target: self, canEdit: false)
+        })
+        
+        let shareVideo = UIAlertAction(title: "Video", style: .default) { (action) in
+            camera.PresentVideoLibrary(target: self, canEdit: false)
+        }
+        
+        let shareLocation = UIAlertAction(title: "Location", style: .default) { (action) in
+            print("Location")
+        }
+        
+        //MARK: Cancel
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            
+        })
+        
+        
+        takePhotoVideo.setValue(UIImage(named: "camera"), forKey: "image")
+        showPhoto.setValue(UIImage(named: "picture"), forKey: "image")
+        shareVideo.setValue(UIImage(named: "video"), forKey: "image")
+        shareLocation.setValue(UIImage(named: "location"), forKey: "image")
+        
+        let actionsArray : [UIAlertAction] = [takePhotoVideo, showPhoto, shareVideo,shareLocation,cancel]
+        
+        for action in actionsArray {
+            optionMenu.addAction(action)
+        }
+        
+        present(optionMenu, animated: true, completion: nil)
+
+    }
+    
+    func setAudioButton(){
+        let micItem = InputBarButtonItem(type: .system)
+        micItem.tintColor = .darkGray
+        micItem.image = UIImage(named: "mic")
+        micItem.setSize(CGSize(width: 60, height: 30), animated: true)
+        
+        // add Action
+        micItem.addTarget(self, action: #selector(pushAudio), for: .touchUpInside)
+        
+        messageInputBar.leftStackView.alignment = .center
+        messageInputBar.setRightStackViewWidthConstant(to: 50, animated: false)
+        messageInputBar.setStackViewItems([micItem], forStack: .right, animated: true)
+        
+    }
+    
+    @objc func pushAudio() {
+        print("aa")
+    }
+    
+    //MARK: Imagepicker Delegate
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        self.dismiss(animated: true) {
+            let picure = info[.originalImage] as? UIImage
+            let video = info[UIImagePickerController.InfoKey.mediaURL] as? NSURL
+            
+            self.send_Message(text: nil, picture: picure, location: nil, video: video, audio: nil)
+        }
     }
     
 }
