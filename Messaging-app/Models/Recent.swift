@@ -110,4 +110,35 @@ func createRecentItem(userID :String, chatRoomId : String, members : [String], w
     
 }
 
+
 // Message methods
+
+func updateRecent(chatRoomId : String, lastMessage : String) {
+    firebaseReferences(.Recent).whereField(kCHATROOMID, isEqualTo: chatRoomId).getDocuments { (snapshot, error) in
+        
+        guard let snapshot = snapshot else {return}
+        
+        if !snapshot.isEmpty {
+            for recent in snapshot.documents {
+                let currentRecent = recent.data() as NSDictionary
+                
+                // update LastMessage
+                updateRecentItem(recent: currentRecent, lastMessage: lastMessage)
+                
+            }
+        }
+    }
+}
+
+func updateRecentItem(recent : NSDictionary, lastMessage : String) {
+    
+    let date = dateFormatter().string(from: Date())
+    var counter = recent[kCOUNTER] as! Int
+    
+    if recent[kUSERID] as! String != FUser.currentID() {
+        counter += 1
+    }
+    
+    let values = [kLASTMESSAGE : lastMessage, kCOUNTER : counter, kDATE : date] as [String : Any]
+    firebaseReferences(.Recent).document(recent[kRECENTID] as! String).updateData(values)
+}

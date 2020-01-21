@@ -55,7 +55,9 @@ class OutGiongMessage {
             firebaseReferences(.Message).document(member).collection(chatRoomId).document(messageId).setData(messageDictionary as! [String : Any])
         }
         
-        // update lastMessage
+        // update lastMessage & Date & counter
+        updateRecent(chatRoomId: chatRoomId, lastMessage: messageDictionary[kMESSAGE] as! String)
+        
     }
     
     // update Read Message
@@ -66,7 +68,13 @@ class OutGiongMessage {
         let value = [kSTATUS : kREAD, kREADDATE : readDate]
         
         for userId in membersIds {
-            firebaseReferences(.Message).document(userId).collection(chatRoomId).document(messageId).updateData(value)
+            firebaseReferences(.Message).document(userId).collection(chatRoomId).document(messageId).getDocument { (snapshot, error) in
+                
+                guard let snapshot = snapshot else {return}
+                if snapshot.exists {
+                    firebaseReferences(.Message).document(userId).collection(chatRoomId).document(messageId).updateData(value)
+                }
+            }
         }
         
     }

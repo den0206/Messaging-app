@@ -99,6 +99,8 @@
 		3A359D6823D527E600B0692F /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */,
+				3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */,
 				3ABA82A723D3DB660091DB23 /* MessageViewController.swift */,
 				3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */,
 			);
@@ -160,11 +162,9 @@
 				3A46E01A23CDF16A008C3D07 /* SignUpViewController.swift */,
 				3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */,
 				3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */,
-				3AA8970D23D1D1DA00B3EE87 /* ChatsViewController.swift */,
-				3AA8970F23D1D92A00B3EE87 /* UsersTableViewController.swift */,
-				3A359D6823D527E600B0692F /* Message */,
 				3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */,
 				3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */,
+				3A359D6823D527E600B0692F /* Message */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

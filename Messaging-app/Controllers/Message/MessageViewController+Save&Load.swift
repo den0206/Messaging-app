@@ -77,6 +77,15 @@ extension MessageViewController {
     
     func update_Message(messageDictionary : NSDictionary) {
         
+        for index in 0 ..< objectMessages.count {
+            let temp = objectMessages[index]
+            
+            if messageDictionary[kMESSAGEID] as! String == temp[kMESSAGEID] as! String {
+                objectMessages[index] = messageDictionary
+                self.messagesCollectionView.reloadData()
+            }
+        }
+        
     }
     //MARK: Load Message
     func loadMessage() {
