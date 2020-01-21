@@ -30,7 +30,7 @@ class InComingMessage {
         case kPICTURE :
             message = pictureMessae(messageDictionary: messageDIctionary, chatRoomId: chatRoomId)
         case kVIDEO :
-            print("kVideo")
+            message = videoMessage(messageDictionary: messageDIctionary, chatRoomId: chatRoomId)
         case kLOCATION :
             print("Lication")
         default:
@@ -103,4 +103,53 @@ class InComingMessage {
         return nil
  
     }
+    
+    //MARK: Video
+    
+    func videoMessage(messageDictionary : NSDictionary, chatRoomId : String) -> Message? {
+        
+        let name = messageDictionary[kSENDERNAME] as? String
+        let userid = messageDictionary[kSENDERID] as? String
+        let messageId = messageDictionary[kMESSAGEID] as? String
+        
+        var date : Date!
+        
+        if let created = messageDictionary[kDATE] {
+            if (created as! String).count !=  14 {
+                date = Date()
+            } else {
+                date = dateFormatter().date(from: created as! String)
+            }
+        } else {
+            date = Date()
+        }
+        
+        let videoUrl = NSURL(fileURLWithPath: messageDictionary[kVIDEO] as! String)
+        let thumbnail = downloadImageFromData(pictureData: messageDictionary[kTHUMBNAIL] as! String)
+        
+        var videoItem = MockVideoItem(withFileUrl: videoUrl, thumbnail: thumbnail!)
+        
+        downloadVideo(videoUrl: messageDictionary[kVIDEO] as! String) { (isReadyToPlay, fileName) in
+            
+            let url = NSURL(fileURLWithPath: fileInDocumentDirectry(fileName: fileName))
+            videoItem.fileUrl = url
+            
+            imageFromData(pictureData: messageDictionary[kTHUMBNAIL] as! String) { (image) in
+                if image != nil {
+                    videoItem.image = image
+                }
+                //                self.collectionView.reloadData()
+            }
+            self.collectionView.reloadData()
+        }
+        
+        if videoItem.fileUrl != nil && videoItem.image != nil {
+            return Message(media: videoItem, sender: Sender(senderId: userid!, displayName: name!), messageId: messageId!, date: date)
+        } else {
+            
+            return nil
+        }
+        
+    }
+    
 }

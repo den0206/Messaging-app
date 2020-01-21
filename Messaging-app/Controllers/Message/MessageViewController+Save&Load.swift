@@ -42,6 +42,32 @@ extension MessageViewController {
             
         }
         
+        // Video
+        
+        if let video = video {
+            let videoData = NSData(contentsOfFile: video.path!)
+            let thumbnailData = videoThmbnail(video: video).jpegData(compressionQuality: 0.3)
+            
+            // upload
+            
+            uploadVideo(videoUrl: videoData!, chatRoomId: chatRoomId, view: self.navigationController!.view) { (videoLink) in
+                
+                if videoLink != nil {
+                    
+                    let text = "\(kVIDEO)"
+                    
+                    outGoingMessage = OutGiongMessage(message: text, videoLink: videoLink!, thumbnail: thumbnailData! as NSData, senderId: currentUser.objectId, senderName: currentUser.firstName, status: kDELIVERED, type: kVIDEO)
+                    
+                    outGoingMessage?.sendMessage(chatRoomId: self.chatRoomId, messageDictionary: outGoingMessage!.messageDictionary, membersIds: self.memberIds, membersToPush: self.membersToPush)
+                    
+                    self.finishSendMessage()
+                }
+            }
+            
+            return
+            
+        }
+        
 
         
         // for Text & Location type

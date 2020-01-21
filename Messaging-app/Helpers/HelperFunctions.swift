@@ -36,6 +36,44 @@ func imageFromData(pictureData: String, withBlock: (_ image: UIImage?) -> Void) 
     withBlock(image)
 }
 
+func downloadImageFromData(pictureData: String) -> UIImage? {
+    
+    let imageFileName = (pictureData.components(separatedBy: "%").last!).components(separatedBy: "?").first!
+
+
+    if fileExistPath(path: imageFileName) {
+
+        if let comtentsOfFile = UIImage(contentsOfFile: fileInDocumentDirectry(fileName: imageFileName)) {
+
+
+            return comtentsOfFile
+        } else {
+            print("couldnt generateimage")
+            return nil
+        }
+    } else {
+        //        let data = NSData(contentsOf: imageURL! as URL)
+       let data = NSData(base64Encoded: imageFileName, options: NSData.Base64DecodingOptions(rawValue: 0))
+
+        if data != nil {
+            var docURL = getDocumentUrl()
+
+            docURL = docURL.appendingPathComponent(imageFileName, isDirectory: false)
+            data!.write(to: docURL, atomically: true)
+
+            let imageToReturn = UIImage(data: data! as Data)
+            return imageToReturn
+
+        } else {
+
+            print("No image in Database")
+            return nil
+
+        }
+
+    }
+}
+
 
 func isValidEmail(_ string: String) -> Bool {
        let emailRegEx = "[A-Z0-9a-z._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"

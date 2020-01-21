@@ -30,6 +30,16 @@ class OutGiongMessage {
         
     }
     
+    // video
+    
+    init(message : String, videoLink : String, thumbnail : NSData, senderId : String, senderName : String, status : String, type : String) {
+        
+        // encode Thumbnail
+        let picThumb = thumbnail.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        
+        messageDictionary = NSMutableDictionary(objects: [message,videoLink,picThumb, senderId,senderName,status,type], forKeys: [kMESSAGE as NSCopying,kVIDEO as NSCopying,kTHUMBNAIL as NSCopying,kSENDERID as NSCopying, kSENDERNAME as NSCopying, kSTATUS as NSCopying, kTYPE as NSCopying])
+    }
+    
     // save each Message FioreStore
     
     
