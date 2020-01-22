@@ -32,10 +32,17 @@
 		3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */; };
 		3ACADA8623CF6D3300205AF5 /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */; };
 		3ACADA8823CF6EC200205AF5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3ACADA8723CF6EC100205AF5 /* GoogleService-Info.plist */; };
+		3ACE0E8323D797DB00C2BFF0 /* FeedCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACE0E8223D797DB00C2BFF0 /* FeedCollectionViewController.swift */; };
+		3ACE0E8523D79A9500C2BFF0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACE0E8423D79A9500C2BFF0 /* CustomImageView.swift */; };
+		3ACE0E8723D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACE0E8623D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift */; };
 		3AD228D523D080AA00F4A5CA /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228D423D080AA00F4A5CA /* HelperFunctions.swift */; };
 		3AD228D723D0834E00F4A5CA /* FUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228D623D0834E00F4A5CA /* FUser.swift */; };
 		3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228D823D0836600F4A5CA /* Constracts.swift */; };
 		3AD228DB23D0839500F4A5CA /* References.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD228DA23D0839500F4A5CA /* References.swift */; };
+		3AD29C2023D86FC0002DC0EB /* UploadPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD29C1F23D86FC0002DC0EB /* UploadPostViewController.swift */; };
+		3AD29C2223D871B3002DC0EB /* SelectImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD29C2123D871B3002DC0EB /* SelectImageCollectionViewController.swift */; };
+		3AD29C2423D871F7002DC0EB /* SelectPhotoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD29C2323D871F7002DC0EB /* SelectPhotoHeader.swift */; };
+		3AD29C2623D87545002DC0EB /* SelectPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD29C2523D87545002DC0EB /* SelectPhotoCell.swift */; };
 		3AF86A8E23D33F0500C3D5F8 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,10 +75,17 @@
 		3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		3ACADA8523CF6D3300205AF5 /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
 		3ACADA8723CF6EC100205AF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3ACE0E8223D797DB00C2BFF0 /* FeedCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewController.swift; sourceTree = "<group>"; };
+		3ACE0E8423D79A9500C2BFF0 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
+		3ACE0E8623D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		3AD228D423D080AA00F4A5CA /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		3AD228D623D0834E00F4A5CA /* FUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FUser.swift; sourceTree = "<group>"; };
 		3AD228D823D0836600F4A5CA /* Constracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constracts.swift; sourceTree = "<group>"; };
 		3AD228DA23D0839500F4A5CA /* References.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = References.swift; sourceTree = "<group>"; };
+		3AD29C1F23D86FC0002DC0EB /* UploadPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewController.swift; sourceTree = "<group>"; };
+		3AD29C2123D871B3002DC0EB /* SelectImageCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageCollectionViewController.swift; sourceTree = "<group>"; };
+		3AD29C2323D871F7002DC0EB /* SelectPhotoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoHeader.swift; sourceTree = "<group>"; };
+		3AD29C2523D87545002DC0EB /* SelectPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCell.swift; sourceTree = "<group>"; };
 		3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 		96370212C10A4C0043BA89FE /* Pods-Messaging-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messaging-app.debug.xcconfig"; path = "Target Support Files/Pods-Messaging-app/Pods-Messaging-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +160,7 @@
 		3A5B637323CDDB5F00676836 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				3ACE0E8423D79A9500C2BFF0 /* CustomImageView.swift */,
 				3A1A25CE23D59A5500F949E7 /* downloader.swift */,
 				3A5B637923CDEB1B00676836 /* Extensions.swift */,
 				3AD228D423D080AA00F4A5CA /* HelperFunctions.swift */,
@@ -164,7 +179,9 @@
 				3AC4BA9823D08C1700256B9C /* SettingTableViewController.swift */,
 				3ABED37E23D29CD20040C90B /* ProfileTableViewController.swift */,
 				3AF86A8D23D33F0500C3D5F8 /* EditUserViewController.swift */,
+				3ACE0E8223D797DB00C2BFF0 /* FeedCollectionViewController.swift */,
 				3A359D6823D527E600B0692F /* Message */,
+				3AD29C1E23D86F92002DC0EB /* UploadPost */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -187,8 +204,20 @@
 			children = (
 				3AA8971123D1D95A00B3EE87 /* UsersTableViewCell.swift */,
 				3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */,
+				3ACE0E8623D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift */,
+				3AD29C2323D871F7002DC0EB /* SelectPhotoHeader.swift */,
+				3AD29C2523D87545002DC0EB /* SelectPhotoCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		3AD29C1E23D86F92002DC0EB /* UploadPost */ = {
+			isa = PBXGroup;
+			children = (
+				3AD29C2123D871B3002DC0EB /* SelectImageCollectionViewController.swift */,
+				3AD29C1F23D86FC0002DC0EB /* UploadPostViewController.swift */,
+			);
+			path = UploadPost;
 			sourceTree = "<group>";
 		};
 		E1B26690BDBFCAF5C3D2A571 /* Pods */ = {
@@ -316,12 +345,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AD29C2223D871B3002DC0EB /* SelectImageCollectionViewController.swift in Sources */,
+				3AD29C2023D86FC0002DC0EB /* UploadPostViewController.swift in Sources */,
 				3AF86A8E23D33F0500C3D5F8 /* EditUserViewController.swift in Sources */,
+				3ACE0E8523D79A9500C2BFF0 /* CustomImageView.swift in Sources */,
 				3AD228D523D080AA00F4A5CA /* HelperFunctions.swift in Sources */,
 				3A5B637823CDE99300676836 /* LoginViewController.swift in Sources */,
 				3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */,
 				3ACADA8623CF6D3300205AF5 /* MainTabVC.swift in Sources */,
 				3AA8970E23D1D1DA00B3EE87 /* ChatsViewController.swift in Sources */,
+				3ACE0E8323D797DB00C2BFF0 /* FeedCollectionViewController.swift in Sources */,
 				3ABD776A23D428D10031D990 /* Message.swift in Sources */,
 				3AD228DB23D0839500F4A5CA /* References.swift in Sources */,
 				3AD228D723D0834E00F4A5CA /* FUser.swift in Sources */,
@@ -338,6 +371,9 @@
 				3A5B637A23CDEB1B00676836 /* Extensions.swift in Sources */,
 				3A1A25CF23D59A5500F949E7 /* downloader.swift in Sources */,
 				3AD228D923D0836600F4A5CA /* Constracts.swift in Sources */,
+				3AD29C2623D87545002DC0EB /* SelectPhotoCell.swift in Sources */,
+				3AD29C2423D871F7002DC0EB /* SelectPhotoHeader.swift in Sources */,
+				3ACE0E8723D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift in Sources */,
 				3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */,
 				3A46E01B23CDF16A008C3D07 /* SignUpViewController.swift in Sources */,
 				3A359D6A23D5283400B0692F /* MessageViewController+Save&Load.swift in Sources */,
