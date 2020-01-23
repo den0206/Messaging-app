@@ -27,6 +27,8 @@ class SelectImageCollectionViewController: UICollectionViewController , UICollec
         collectionView.register(SelectPhotoCell.self, forCellWithReuseIdentifier: "SelectPhotoCell")
         
         collectionView.backgroundColor = .white
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(showUploadPost))
 
        loadPhotos()
         
@@ -100,6 +102,14 @@ class SelectImageCollectionViewController: UICollectionViewController , UICollec
         return header
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        self.selectedImage = images[indexPath.row]
+        self.collectionView.reloadData()
+        
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+    }
     //MARK: Load Photos
     
     private func loadPhotos() {
@@ -145,6 +155,15 @@ class SelectImageCollectionViewController: UICollectionViewController , UICollec
         options.sortDescriptors = [sortDescriptors]
         
         return options
+    }
+    
+    //MARK: Helper
+    
+    @objc func showUploadPost() {
+        let uploadVC = UploadPostViewController()
+        uploadVC.uploadAction = UploadPostViewController.UploadAction(index: 0)
+        uploadVC.selectedImage = header?.photoImageView.image
+        navigationController?.pushViewController(uploadVC, animated: true)
     }
    
 
