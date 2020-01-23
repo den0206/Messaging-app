@@ -87,4 +87,10 @@ public let kREAD = "read"
 public let kREADDATE = "readDate"
 public let kDELETED = "deleted"
 
+// Post
+public let kCAPTION = "caption"
+public let kPOSTID = "postId"
+public let kLIKE = "like"
+public let kPOST = "post"
+
 

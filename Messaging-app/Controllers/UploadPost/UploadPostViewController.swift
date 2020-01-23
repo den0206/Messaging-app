@@ -108,16 +108,32 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
             let postImage = photoImageView.image,
             let captionLabel = captionLabel.text
             else { return }
-        
-        // Post Initializer
-        
-        // save Func
-        
-        let uploadImage = postImage.jpegData(compressionQuality: 0.3)
+    
         let postId = UUID().uuidString
         let date = dateFormatter().string(from: Date())
         
         // upload Stroge
+        
+        uploadPostImage(image: postImage, PostId: postId, view: self.navigationController!.view) { (imageLink) in
+       
+            if imageLink != nil {
+                let withValue = [kCAPTION : captionLabel,
+                                     kPICTURE : imageLink!,
+                                     kLIKE : 0,
+                                     kCREATEDAT : date,
+                                     kUSERID : FUser.currentID()] as [String : Any]
+                
+                // set Firestore
+                
+                firebaseReferences(.Post).document(FUser.currentID()).collection(postId).document().setData(withValue)
+                
+                self.navigationController?.popToRootViewController(animated: true)
+                
+            }
+            
+           
+            
+        }
         
         
     }
