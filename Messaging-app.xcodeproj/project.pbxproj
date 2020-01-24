@@ -11,6 +11,9 @@
 		3A15D82123D1CDB700BA5E25 /* RecentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */; };
 		3A1A25CF23D59A5500F949E7 /* downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1A25CE23D59A5500F949E7 /* downloader.swift */; };
 		3A22D74523D2CBAD00AEC8B8 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22D74423D2CBAD00AEC8B8 /* Recent.swift */; };
+		3A2ECA9923DB0598009A70A3 /* ProfileCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2ECA9823DB0598009A70A3 /* ProfileCollectionViewController.swift */; };
+		3A2ECA9C23DB062E009A70A3 /* UserPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2ECA9B23DB062E009A70A3 /* UserPostCell.swift */; };
+		3A2ECA9E23DB070C009A70A3 /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2ECA9D23DB070C009A70A3 /* UserProfileHeader.swift */; };
 		3A359D6A23D5283400B0692F /* MessageViewController+Save&Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */; };
 		3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A359D6B23D52C4800B0692F /* InComingMessage.swift */; };
 		3A46E01B23CDF16A008C3D07 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46E01A23CDF16A008C3D07 /* SignUpViewController.swift */; };
@@ -53,6 +56,9 @@
 		3A15D82023D1CDB700BA5E25 /* RecentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableViewCell.swift; sourceTree = "<group>"; };
 		3A1A25CE23D59A5500F949E7 /* downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = downloader.swift; sourceTree = "<group>"; };
 		3A22D74423D2CBAD00AEC8B8 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
+		3A2ECA9823DB0598009A70A3 /* ProfileCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewController.swift; sourceTree = "<group>"; };
+		3A2ECA9B23DB062E009A70A3 /* UserPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostCell.swift; sourceTree = "<group>"; };
+		3A2ECA9D23DB070C009A70A3 /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		3A359D6923D5283400B0692F /* MessageViewController+Save&Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewController+Save&Load.swift"; sourceTree = "<group>"; };
 		3A359D6B23D52C4800B0692F /* InComingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingMessage.swift; sourceTree = "<group>"; };
 		3A46E01A23CDF16A008C3D07 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +118,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3A2ECA9A23DB0602009A70A3 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				3A2ECA9B23DB062E009A70A3 /* UserPostCell.swift */,
+				3A2ECA9D23DB070C009A70A3 /* UserProfileHeader.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		3A2ECA9F23DB0D15009A70A3 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				3A2ECA9823DB0598009A70A3 /* ProfileCollectionViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		3A359D6823D527E600B0692F /* Message */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +172,7 @@
 				3A5B636523CDD90200676836 /* Main.storyboard */,
 				3A5B637523CDDB7700676836 /* Models */,
 				3A5B637623CDDB8400676836 /* View */,
+				3A2ECA9A23DB0602009A70A3 /* Profile */,
 				3A5B637423CDDB6A00676836 /* Controllers */,
 				3A5B637323CDDB5F00676836 /* Helpers */,
 				3A5B636823CDD90500676836 /* Assets.xcassets */,
@@ -184,6 +208,7 @@
 				3ACE0E8223D797DB00C2BFF0 /* FeedCollectionViewController.swift */,
 				3A359D6823D527E600B0692F /* Message */,
 				3AD29C1E23D86F92002DC0EB /* UploadPost */,
+				3A2ECA9F23DB0D15009A70A3 /* Profile */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -348,8 +373,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A2ECA9923DB0598009A70A3 /* ProfileCollectionViewController.swift in Sources */,
 				3AD29C2223D871B3002DC0EB /* SelectImageCollectionViewController.swift in Sources */,
 				3AD29C2023D86FC0002DC0EB /* UploadPostViewController.swift in Sources */,
+				3A2ECA9E23DB070C009A70A3 /* UserProfileHeader.swift in Sources */,
 				3AF86A8E23D33F0500C3D5F8 /* EditUserViewController.swift in Sources */,
 				3ACE0E8523D79A9500C2BFF0 /* CustomImageView.swift in Sources */,
 				3AD228D523D080AA00F4A5CA /* HelperFunctions.swift in Sources */,
@@ -370,6 +397,7 @@
 				3AC4BA9923D08C1700256B9C /* SettingTableViewController.swift in Sources */,
 				3ABA82A823D3DB660091DB23 /* MessageViewController.swift in Sources */,
 				3A359D6C23D52C4800B0692F /* InComingMessage.swift in Sources */,
+				3A2ECA9C23DB062E009A70A3 /* UserPostCell.swift in Sources */,
 				3A9AD9FB23D1C9AC000E4FB1 /* Camera.swift in Sources */,
 				3A5B637A23CDEB1B00676836 /* Extensions.swift in Sources */,
 				3A1A25CF23D59A5500F949E7 /* downloader.swift in Sources */,

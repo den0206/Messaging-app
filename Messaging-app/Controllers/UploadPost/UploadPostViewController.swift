@@ -125,7 +125,8 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
                 
                 // set Firestore
                 
-                firebaseReferences(.Post).document(FUser.currentID()).collection(postId).document().setData(withValue)
+//                firebaseReferences(.Post).document(FUser.currentID()).collection(postId).document().setData(withValue)
+                firebaseReferences(.Post).document(FUser.currentID()).collection(kPOST).document(postId).setData(withValue)
                 
                 self.navigationController?.popToRootViewController(animated: true)
                 

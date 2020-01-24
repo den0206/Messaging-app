@@ -102,7 +102,12 @@ class SettingTableViewController: UITableViewController {
     
     @objc func avatarTapped() {
         
-        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+//        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+//        profileVC.user = FUser.currentUser()
+//
+//        navigationController?.pushViewController(profileVC, animated: true)
+        
+        let profileVC = ProfileCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         profileVC.user = FUser.currentUser()
         
         navigationController?.pushViewController(profileVC, animated: true)

@@ -207,10 +207,14 @@ extension UsersTableViewController : UISearchResultsUpdating, UserstableViewCell
     
     private func showProfile(fuser : FUser, indexpath :IndexPath) {
         
-        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+//        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+//
+//        profileVC.user = fuser
+//
+//        navigationController?.pushViewController(profileVC, animated: true)
         
+        let profileVC = ProfileCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         profileVC.user = fuser
-        
         navigationController?.pushViewController(profileVC, animated: true)
         
     }
