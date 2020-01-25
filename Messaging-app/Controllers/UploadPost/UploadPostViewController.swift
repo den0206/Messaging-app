@@ -110,7 +110,10 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
             else { return }
     
         let postId = UUID().uuidString
-        let date = dateFormatter().string(from: Date())
+//        let date = dateFormatter().string(from: Date())
+        
+        // creation date
+        let creationDate = Int(NSDate().timeIntervalSince1970)
         
         // upload Stroge
         
@@ -120,7 +123,7 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
                 let withValue = [kCAPTION : captionLabel,
                                      kPICTURE : imageLink!,
                                      kLIKE : 0,
-                                     kCREATEDAT : date,
+                                     kCREATEDAT : creationDate,
                                      kUSERID : FUser.currentID()] as [String : Any]
                 
                 // set Firestore

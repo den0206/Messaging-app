@@ -10,6 +10,8 @@ import UIKit
 
 class UserPostCell: UICollectionViewCell {
     
+    
+    
     let postImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleToFill
@@ -23,6 +25,14 @@ class UserPostCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview(postImageView)
         postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    func generateCell(post : Post) {
+        
+        if post.imageLink != "" {
+            postImageView.image = downLoadImage(imageLink: post.imageLink)
+        }
+        
     }
     
     required init?(coder: NSCoder) {

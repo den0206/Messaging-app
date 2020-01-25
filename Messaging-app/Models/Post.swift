@@ -8,29 +8,42 @@
 
 import Foundation
 
-//class Post{
-//
-//    var caption : String!
-//    var userId : String!
-//    var imageLink : String!
-//    var postId : String!
-//    
-//    var createtionDate : Date
-//    var updateDate : Date
-//
-//    var postDIctionary : NSDictionary
-//
-//    var user : FUser?
-//
-//    init(_caption : String, _userId : String, _imageLink : String, _postId : String) {
-//
-//        caption = _caption
-//        userId = _userId
-//        imageLink = _imageLink
-//        postId = _postId
-//
-//        postDIctionary =
-//    }
-//
-//
-//}
+class Post{
+
+    var caption : String!
+    var userId : String!
+    var imageLink : String!
+    var postId : String!
+    
+    var createtionDate : Date!
+//    var updateDate : String?
+
+    var postDIctionary : NSDictionary?
+
+    var user : FUser?
+
+   
+    init(_postID : String, _user : FUser, dictionary : NSDictionary) {
+        
+        postId = _postID
+        user = _user
+        
+        if let _caption = dictionary[kCAPTION] as? String {
+            caption = _caption
+        }
+        
+        if let _userID = dictionary[kUSERID] as? String {
+            userId = _userID
+        }
+        if let _imageLink = dictionary[kPICTURE] as? String {
+            imageLink = _imageLink
+        }
+        
+        if let _creationDate = dictionary[kCREATEDAT] as? Double{
+            createtionDate = Date(timeIntervalSince1970: _creationDate)
+        }
+        
+    }
+    
+
+}

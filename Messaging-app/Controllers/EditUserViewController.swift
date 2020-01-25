@@ -106,7 +106,7 @@ class EditUserViewController: UIViewController {
             self.HUD.dismiss(afterDelay: 3.0)
             
             self.saveButtonOutlet.isEnabled = true
-            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
             
         }
         

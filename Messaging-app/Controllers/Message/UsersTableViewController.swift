@@ -121,7 +121,7 @@ class UsersTableViewController: UITableViewController {
         query.getDocuments { (snapshot, error) in
             
             if error != nil {
-                print("\(error?.localizedDescription)")
+                print("\(error!.localizedDescription)")
                 self.hideIndicator()
                 self.tableView.reloadData()
                 return

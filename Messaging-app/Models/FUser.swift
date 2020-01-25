@@ -196,6 +196,38 @@ class FUser {
         
     }
     
+    //MARK: FollowSection
+    
+    
+    func chackUserFollowed(completion : @escaping(Bool) -> ())  {
+        
+
+        let doc = firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId)
+        
+        doc.getDocument { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            if snapshot.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+ 
+    }
+    
+    func follow() {
+        
+        firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId).setData([kUSERID : self.objectId])
+        firebaseReferences(.Follower).document(self.objectId).collection(kUSERFOLOWERS).document(FUser.currentID()).setData([kUSERID : FUser.currentID()])
+    }
+    
+    func unFollow(){
+        firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId).delete()
+        firebaseReferences(.Follower).document(self.objectId).collection(kUSERFOLOWERS).document(FUser.currentID()).delete()
+    }
+    
 }  // send of User Class
 
 func updateCurrentUserInFirestore(withValues : [String : Any], completion : @escaping(_ error : Error?) -> Void) {

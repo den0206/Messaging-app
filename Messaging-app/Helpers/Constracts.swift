@@ -93,4 +93,8 @@ public let kPOSTID = "postId"
 public let kLIKE = "like"
 public let kPOST = "post"
 
+// social
+public let kUSERFOLLOWING = "userFollowing"
+public let kUSERFOLOWERS = "userFollowers"
+
 

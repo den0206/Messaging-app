@@ -11,9 +11,14 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    var post : Post?
+    var singleViewPost = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView?.backgroundColor = .white
 
         self.collectionView!.register(FeedCellCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -21,6 +26,8 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
         
         let rightButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(showUploadPostVC))
         navigationItem.rightBarButtonItem = rightButton
+        
+        print(singleViewPost, post)
 
       
     }
@@ -41,7 +48,12 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        if singleViewPost {
+             return 1
+        }
+        
         return 1
+
     }
 
 
@@ -52,6 +64,12 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! FeedCellCollectionViewCell
+        
+        if singleViewPost {
+            if let post = self.post {
+                cell.generateCell(post: post, user: post.user!)
+            }
+        }
     
         return cell
     }

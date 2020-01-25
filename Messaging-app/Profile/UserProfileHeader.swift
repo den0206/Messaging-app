@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol UserProfileHeaderDelegate {
+    
+    func handleEditProfileEdit(header : UserProfileHeader)
+    func setUserStatus(header : UserProfileHeader)
+}
+
 class UserProfileHeader: UICollectionViewCell {
+    
+    var delegate : UserProfileHeaderDelegate?
     
     var user : FUser?
     var indexPath : IndexPath?
@@ -76,6 +84,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.layer.borderWidth = 0.5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(handleEditProfile), for: .touchUpInside)
 //        button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
         return button
     }()
@@ -167,16 +176,47 @@ class UserProfileHeader: UICollectionViewCell {
         }
         
         if user.objectId == FUser.currentID() {
-            print("current")
+           
         }
         
+        configureFollowingButton()
         
+    }
+    
+    private func configureFollowingButton() {
+        
+        if user?.objectId == FUser.currentID() {
+            editProfileFollowButton.setTitle("Edit", for: .normal)
+        } else {
+            editProfileFollowButton.setTitleColor(.white, for: .normal)
+             editProfileFollowButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            
+            user?.chackUserFollowed(completion: { (followed) in
+                
+                if followed {
+                    self.editProfileFollowButton.setTitle("Following", for: .normal)
+                } else {
+                    self.editProfileFollowButton.setTitle("Follow", for: .normal)
+                }
+            })
+            
+            
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Handlers(delegate)
+    
+    @objc func handleEditProfile() {
+        delegate?.handleEditProfileEdit(header: self)
+    }
+    
+    @objc func handleUserStatus() {
+        delegate?.setUserStatus(header: self)
+    }
     
     
 }

@@ -10,9 +10,12 @@ import UIKit
 
 class FeedCellCollectionViewCell: UICollectionViewCell {
     
-    let profileImageView : CustomImageView = {
+    var post : Post?
+    var user : FUser?
+    
+    lazy var profileImageView : CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
@@ -38,7 +41,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
     
     let postImageView : CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .darkGray
         
@@ -137,8 +140,8 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         addSubview(captionLabel)
         captionLabel.anchor(top: likesLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
 //
-//        addSubview(postTimeLabel)
-//        postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(postTimeLabel)
+        postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
                
     }
@@ -152,6 +155,26 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         
         addSubview(stackView)
         stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 8, width: 120, height: 50)
+    }
+    
+    func generateCell(post : Post, user : FUser) {
+        
+        if user.avatar != "" {
+            imageFromData(pictureData: user.avatar) { (avatar) in
+                profileImageView.image = avatar?.circleMasked
+            }
+        }
+        
+        userNameButton.setTitle(user.fullname, for: .normal)
+        
+       
+        postImageView.loadImage(with: post.imageLink)
+        
+        captionLabel.text = post.caption
+        
+        postTimeLabel.text = post.createtionDate.timeAgoToDisplay()
+
+        
     }
     
     required init?(coder: NSCoder) {
