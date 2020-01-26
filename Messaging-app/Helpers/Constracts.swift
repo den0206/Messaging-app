@@ -92,6 +92,7 @@ public let kCAPTION = "caption"
 public let kPOSTID = "postId"
 public let kLIKE = "like"
 public let kPOST = "post"
+public let kUSERREFERENCE  = "UserReference"
 
 // social
 public let kUSERFOLLOWING = "userFollowing"

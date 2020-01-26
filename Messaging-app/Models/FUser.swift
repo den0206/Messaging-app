@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
+
 
 class FUser {
     
@@ -173,7 +175,7 @@ class FUser {
             } else {
                 
                 // get User From Firestore
-                fetchUserFromFirestore(authData!.user.uid)
+                fetchCurrentUserFromFirestore(authData!.user.uid)
                 completion(error)
             }
         }
@@ -261,7 +263,7 @@ func updateCurrentUserInFirestore(withValues : [String : Any], completion : @esc
     
 }
 
-func fetchUserFromFirestore(_ userId : String) {
+func fetchCurrentUserFromFirestore(_ userId : String) {
     
     firebaseReferences(.User).document(userId).getDocument { (snapshot, error) in
         
@@ -274,9 +276,21 @@ func fetchUserFromFirestore(_ userId : String) {
             UserDefaults.standard.setValue(snapshot.data()! as NSDictionary, forKeyPath: kCURRENTUSER)
             UserDefaults.standard.synchronize()
         }
-        
-        
     }
+}
+
+func fetchUserIDinFiresore(_ userId : String, completiom : @escaping(FUser) -> ()) {
+    firebaseReferences(.User).document(userId).getDocument { (snapshot, error) in
+        guard let snapshot = snapshot else {return}
+        
+        if snapshot.exists {
+            let userDictionay = snapshot.data()! as NSDictionary
+            let user = FUser(_dictionary: userDictionay)
+            
+            completiom(user)
+        }
+    }
+    
 }
 
 func saveUserLocal(_ user : FUser) {

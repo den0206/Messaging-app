@@ -124,12 +124,13 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
                                      kPICTURE : imageLink!,
                                      kLIKE : 0,
                                      kCREATEDAT : creationDate,
+                                     kUSERREFERENCE : firebaseReferences(.User).document(FUser.currentID()),
                                      kUSERID : FUser.currentID()] as [String : Any]
                 
                 // set Firestore
                 
 //                firebaseReferences(.Post).document(FUser.currentID()).collection(postId).document().setData(withValue)
-                firebaseReferences(.Post).document(FUser.currentID()).collection(kPOST).document(postId).setData(withValue)
+                firebaseReferences(.Post).document(postId).setData(withValue)
                 
                 self.navigationController?.popToRootViewController(animated: true)
                 

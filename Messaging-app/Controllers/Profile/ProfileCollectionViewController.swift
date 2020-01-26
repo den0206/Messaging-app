@@ -28,7 +28,7 @@ class ProfileCollectionViewController: UICollectionViewController,  UICollection
      
         configureRefreshController()
         
-        //MARK: fetchPost
+      
         
         if user != nil {
             fetchPosts()
@@ -122,30 +122,24 @@ class ProfileCollectionViewController: UICollectionViewController,  UICollection
     //MARK: FetchPosts
     
     private func fetchPosts() {
-                   
-        firebaseReferences(.Post).document(user!.objectId).collection(kPOST).order(by: kCREATEDAT, descending: true).limit(to: 11).getDocuments { (snapshot, error) in
-           
-            guard let snapshot = snapshot else {return}
+        
+        firebaseReferences(.Post).whereField(kUSERID, isEqualTo: user!.objectId).order(by: kCREATEDAT, descending: true).limit(to: 11).getDocuments { (snapshot, error) in
             
+            guard let snapshot = snapshot else {return}
             self.collectionView.refreshControl?.endRefreshing()
             
             if !snapshot.isEmpty {
-                for post in snapshot.documents {
-                    let currentPost = post.data() as NSDictionary
-
-                    if currentPost[kUSERID] as! String == FUser.currentID() {
-                        // change post class
-
-                        let myPost = Post(_postID: post.documentID, _user: self.user!, dictionary: currentPost)
-                        self.posts.append(myPost)
-
-                        self.collectionView.reloadData()
-
-                    }
+                for doc in snapshot.documents {
+                    let postDictionary = doc.data() as NSDictionary
+                    
+                    // Post initialize
+                    let post = Post(_postID: doc.documentID, _user: self.user!, dictionary: postDictionary)
+                    self.posts.append(post)
+                    
+                    
                 }
+                self.collectionView.reloadData()
             }
-            
-           
         }
     }
     
@@ -214,7 +208,8 @@ extension ProfileCollectionViewController : UserProfileHeaderDelegate {
         }
         
         // Post Label
-        firebaseReferences(.Post).document(userId).collection(kPOST).getDocuments { (snapshot, error) in
+
+        firebaseReferences(.Post).whereField(kUSERID, isEqualTo: user!.objectId).getDocuments { (snapshot, error) in
             guard let snapshot = snapshot?.documents else {return}
             
             let postNumber = snapshot.count
@@ -223,8 +218,12 @@ extension ProfileCollectionViewController : UserProfileHeaderDelegate {
             attributedText.append(NSAttributedString(string: "post", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
             
             header.postLabel.attributedText = attributedText
-            
         }
+        
+        //        firebaseReferences(.Post).document(userId).collection(kPOST).getDocuments { (snapshot, error) in
+        //
+        //
+                //        }
     }
     
     

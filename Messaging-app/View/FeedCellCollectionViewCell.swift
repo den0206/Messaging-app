@@ -7,21 +7,32 @@
 //
 
 import UIKit
+import FirebaseFirestore
+
+protocol FeedCellDelegate {
+    func handleUsernameTapped(for cell: FeedCellCollectionViewCell)
+}
 
 class FeedCellCollectionViewCell: UICollectionViewCell {
     
-    var post : Post?
-    var user : FUser?
     
-    lazy var profileImageView : CustomImageView = {
+    var user : FUser?
+    var stackView: UIStackView!
+    
+    var post : Post?
+    
+    var delegate : FeedCellDelegate?
+
+    
+    let profileImageView : CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
     }()
     
-    lazy var userNameButton : UIButton = {
+    lazy var usernameButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("User name", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -30,7 +41,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    let optionButton : UIButton = {
+    let optionsButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("•••", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -39,7 +50,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    let postImageView : CustomImageView = {
+    lazy var postImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -84,11 +95,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
         
-        // add gesture recognizer to label
-//        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
-//        likeTap.numberOfTapsRequired = 1
-//        label.isUserInteractionEnabled = true
-//        label.addGestureRecognizer(likeTap)
+ 
         
         return label
     }()
@@ -120,63 +127,100 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40 / 2
         
-        addSubview(userNameButton)
-        userNameButton.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        userNameButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        addSubview(usernameButton)
+        usernameButton.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         
-        addSubview(optionButton)
-        optionButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        optionButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        addSubview(optionsButton)
+        optionsButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+        optionsButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         
         addSubview(postImageView)
-        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight:0 , width: 0, height: 0)
+        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
-        configureActionsButton()
+        configureActionButtons()
         
         addSubview(likesLabel)
         likesLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
+        
         addSubview(captionLabel)
         captionLabel.anchor(top: likesLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-//
+        
         addSubview(postTimeLabel)
         postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
                
     }
     
-    private func configureActionsButton() {
-        
-        let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
+    func configureActionButtons() {
+        stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
         
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 8, width: 120, height: 50)
+        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
+                
+        addSubview(savePostButton)
+        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
+    }
+    
+    func addCommentIndicatorView(toStackView stackView: UIStackView) {
+        
+        commentIndicatorView.isHidden = false
+        
+        stackView.addSubview(commentIndicatorView)
+        commentIndicatorView.anchor(top: stackView.topAnchor, left: stackView.leftAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 64, paddingBottom: 0, paddingRight: 0, width: 10, height: 10)
+        commentIndicatorView.layer.cornerRadius = 10 / 2
     }
     
     func generateCell(post : Post, user : FUser) {
-        
+
         if user.avatar != "" {
             imageFromData(pictureData: user.avatar) { (avatar) in
                 profileImageView.image = avatar?.circleMasked
             }
         }
-        
-        userNameButton.setTitle(user.fullname, for: .normal)
-        
-       
+
+        usernameButton.setTitle(user.fullname, for: .normal)
+
+
         postImageView.loadImage(with: post.imageLink)
-        
+
         captionLabel.text = post.caption
-        
+
         postTimeLabel.text = post.createtionDate.timeAgoToDisplay()
 
-        
+
     }
     
+    func feedGenerateCell(post : Post, reference : DocumentReference) {
+        
+        reference.getDocument { (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            
+            if snapshot.exists {
+                let userDictionay = snapshot.data()!
+                
+                if userDictionay[kAVATAR] as! String != "" {
+                    imageFromData(pictureData: userDictionay[kAVATAR] as! String) { (avatar) in
+                        self.profileImageView.image = avatar?.circleMasked
+                    }
+                }
+                
+                self.usernameButton.setTitle(userDictionay[kFULLNAME] as! String, for: .normal)
+            }
+        }
+        
+        postImageView.loadImage(with: post.imageLink)
+        captionLabel.text = post.caption
+
+        postTimeLabel.text = post.createtionDate.timeAgoToDisplay()
+
+
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
