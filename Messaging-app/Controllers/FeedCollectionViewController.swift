@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
 
 private let reuseIdentifier = "Cell"
 
@@ -16,6 +16,16 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
     var posts = [Post]()
     var post : Post?
     var singleViewPost = false
+    var lastDocument : DocumentSnapshot? = nil
+    
+    let followingRef = firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING)
+    var followingIDs = [FUser.currentID()]
+    
+    var followingListner : ListenerRegistration?
+    
+    deinit {
+        followingListner?.remove()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +37,9 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
         
         configureButton_Refresh()
         
+        
         if !singleViewPost {
+            getFollowing()
             fetchPost()
         }
         
@@ -67,13 +79,11 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
         }
     }
     
-//    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if posts.count > 4 {
-//            if indexPath.item == posts.count - 1 {
-//                fetchPost()
-//            }
-//        }
-//    }
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if posts.count >= 5 && indexPath.item == (self.posts.count - 1) {
+            fetchMorePosts()
+        }
+    }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCellCollectionViewCell
@@ -119,9 +129,11 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
     //MARK: handler
        @objc func handleRefresh() {
            //handle refresh
-        posts.removeAll(keepingCapacity: false)
+        self.posts.removeAll(keepingCapacity: false)
+       
         
         if !singleViewPost {
+            
             fetchPost()
         } else {
             collectionView.refreshControl?.endRefreshing()
@@ -131,45 +143,134 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
            
        }
     
+    //MARK: get followings
+    
+    func getFollowing() {
+        
+        followingListner = followingRef.addSnapshotListener({ (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            
+            if !snapshot.isEmpty {
+                
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                        
+                        let followingId = diff.document.documentID
+                        self.followingIDs.append(followingId)
+                    }
+                    
+                    if (diff.type == .removed) {
+                        let unFollowingId = diff.document.documentID
+                        self.followingIDs.remove(at: self.followingIDs.firstIndex(of: unFollowingId)!)
+                    }
+                }
+                
+            } else {
+                // no document init
+                self.followingIDs = [FUser.currentID()]
+            }
+            
+        })
+        
+        
+    }
+    
+    
     //MARK: fetchPost
     
     private func fetchPost() {
         
-        var followingIDs = [FUser.currentID()]
-        
+        firebaseReferences(.Post).whereField(kUSERID, in: followingIDs).order(by: kCREATEDAT, descending: true).limit(to: 5).getDocuments { (snapshot, error) in
+            
+            
+            guard let snapshot = snapshot else {return}
+            self.collectionView.refreshControl?.endRefreshing()
+            
+            if !snapshot.isEmpty {
+                for doc in snapshot.documents {
+                    let postDictionary = doc.data() as NSDictionary
+                    
+                    let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
+                    self.posts.append(post)
+                    
+                    
+                }
+                print(self.posts.count, self.followingIDs.count)
+                self.lastDocument = snapshot.documents.last
+                self.collectionView.reloadData()
+            }
+        }
         
         // get FofllowingIds
         
-        firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).getDocuments { (snapshot, error) in
-            guard let snapshot = snapshot else {return}
-            self.collectionView.refreshControl?.endRefreshing()
-
-            if !snapshot.isEmpty {
-                for following in snapshot.documents {
-                    let followId = following.documentID
-                    followingIDs.append(followId)
-                }
-
-            }
-            // make limit later...
-            firebaseReferences(.Post).whereField(kUSERID, in: followingIDs).order(by: kCREATEDAT, descending: true).limit(to: 5).getDocuments { (snapshot, error) in
+//        followingRef.getDocuments { (snapshot, error) in
+//
+//            guard let snapshot = snapshot else {return}
+//            self.collectionView.refreshControl?.endRefreshing()
+//
+//
+//
+//            if !snapshot.isEmpty {
+//
+//                for following in snapshot.documents {
+//                    let followId = following.documentID
+//
+//                    if !self.followingIDs.contains(followId) {
+//                        self.followingIDs.append(followId)
+//                    }
+//                }
+//
+//            }
+//            // make limit later...
+//            firebaseReferences(.Post).whereField(kUSERID, in: self.followingIDs).order(by: kCREATEDAT, descending: true).limit(to: 5).getDocuments { (snapshot, error) in
+//
+//
+//                guard let snapshot = snapshot else {return}
+//
+//
+//                if !snapshot.isEmpty {
+//                    for doc in snapshot.documents {
+//                        let postDictionary = doc.data() as NSDictionary
+//
+//                        let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
+//                        self.posts.append(post)
+//
+//
+//                    }
+//                    print(self.posts.count, self.followingIDs.count)
+//                    self.lastDocument = snapshot.documents.last
+//                    self.collectionView.reloadData()
+//                }
+//            }
+//
+//        }
+    }
+    
+    private func fetchMorePosts() {
+        
+        guard let lastDocument = lastDocument else {return}
+            
+            firebaseReferences(.Post).whereField(kUSERID, in: self.followingIDs).order(by: kCREATEDAT, descending: true).start(afterDocument: lastDocument).limit(to: 5).getDocuments { (snapshot, error) in
                 guard let snapshot = snapshot else {return}
-
-
+                
+                
                 if !snapshot.isEmpty {
                     for doc in snapshot.documents {
                         let postDictionary = doc.data() as NSDictionary
-
+                        
                         let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
                         self.posts.append(post)
-
+                        
+                        
                     }
-
+                    print(self.posts.count, self.followingIDs.count)
+                    self.lastDocument = snapshot.documents.last
                     self.collectionView.reloadData()
                 }
             }
-
-        }
+            
+        
+        
     }
     
    
