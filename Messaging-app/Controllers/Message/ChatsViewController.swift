@@ -207,11 +207,10 @@ extension ChatsViewController : RecentTableViewCellDelegate {
     
     private func showProfile(user : FUser) {
         
-        let profileVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC") as! ProfileTableViewController
+        let proileVC = ProfileCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        proileVC.user = user
         
-        profileVC.user = user
-        
-        navigationController?.pushViewController(profileVC, animated: true)
+        navigationController?.pushViewController(proileVC, animated: true)
         
         
     }

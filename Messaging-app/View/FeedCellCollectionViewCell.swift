@@ -14,6 +14,10 @@ protocol FeedCellDelegate {
     func handleUsernameTapped(for cell: FeedCellCollectionViewCell)
     
     func handleOptionButtonTapped(for cell : FeedCellCollectionViewCell)
+    
+    func hamdleLikeButonnTapped(for cell : FeedCellCollectionViewCell, isDoucbleTap : Bool)
+    
+    func handlePostimageViewTapped(for cell : FeedCellCollectionViewCell, indexPath : IndexPath)
 }
 
 class FeedCellCollectionViewCell: UICollectionViewCell {
@@ -25,6 +29,8 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
     var post : Post?
     
     var delegate : FeedCellDelegate?
+    
+    var indexPath : IndexPath!
 
     
     let profileImageView : CustomImageView = {
@@ -40,6 +46,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         button.setTitle("User name", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        button.addTarget(self, action: #selector(userNameTapped), for: .touchUpInside)
         
         return button
     }()
@@ -60,6 +67,11 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         iv.clipsToBounds = true
         iv.backgroundColor = .darkGray
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postImageViewTapped))
+        tapGesture.numberOfTouchesRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(tapGesture)
+        
         return iv
     }()
     
@@ -69,6 +81,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -179,7 +192,9 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         commentIndicatorView.layer.cornerRadius = 10 / 2
     }
     
-    func generateCell(post : Post, user : FUser) {
+    func generateCell(post : Post, user : FUser, indexPath : IndexPath) {
+        
+        self.indexPath = indexPath
 
         if user.avatar != "" {
             imageFromData(pictureData: user.avatar) { (avatar) in
@@ -235,8 +250,19 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
 
 extension FeedCellCollectionViewCell {
     
+    @objc func userNameTapped() {
+        delegate?.handleUsernameTapped(for: self)
+    }
+    
     @objc func optionButtonTapped() {
         delegate?.handleOptionButtonTapped(for: self)
     }
     
+    @objc func likeButtonTapped() {
+        delegate?.hamdleLikeButonnTapped(for: self, isDoucbleTap: false)
+    }
+    
+    @objc func postImageViewTapped() {
+        delegate?.handlePostimageViewTapped(for: self, indexPath: indexPath)
+    }
 }

@@ -12,7 +12,9 @@ import FirebaseFirestore
 private let reuseIdentifier = "Cell"
 
 class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
+   
     
+ 
     var posts = [Post]()
     var post : Post?
     var singleViewPost = false
@@ -92,12 +94,28 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
         
         if singleViewPost {
             if let post = self.post {
-                cell.generateCell(post: post, user: post.user!)
+                if post.user != nil {
+                    // From Profile
+                    cell.generateCell(post: post, user: post.user!, indexPath: indexPath)
+                } else {
+                    fetchUserIDinFiresore(post.userId) { (user) in
+                        cell.generateCell(post: post, user: user, indexPath: indexPath)
+                    }
+                }
+            
             }
         } else {
+            
             let post = posts[indexPath.item]
+            
+            fetchUserIDinFiresore(post.userId) { (user) in
+                cell.generateCell(post: post, user: user, indexPath: indexPath)
+                cell.user = user
+            }
             cell.post = post
-            cell.feedGenerateCell(post: post, reference: post.userReference!)
+            
+//            cell.feedGenerateCell(post: post, reference: post.userReference!)
+            
         }
 
     
@@ -283,7 +301,10 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
 extension FeedCollectionViewController {
     
     func handleUsernameTapped(for cell: FeedCellCollectionViewCell) {
-        print("User")
+        let profileVC = ProfileCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        profileVC.user = cell.user
+        
+        navigationController?.pushViewController(profileVC, animated: true)
     }
     
     func handleOptionButtonTapped(for cell: FeedCellCollectionViewCell) {
@@ -318,6 +339,21 @@ extension FeedCollectionViewController {
     }
     
     
+    func handlePostimageViewTapped(for cell: FeedCellCollectionViewCell, indexPath: IndexPath) {
+        // single View mode
+        
+        let singleFeedVC = FeedCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        singleFeedVC.singleViewPost = true
+        singleFeedVC.post = posts[indexPath.item]
+        
+        navigationController?.pushViewController(singleFeedVC, animated: true)
+    }
     
+  
+    
+    func hamdleLikeButonnTapped(for cell: FeedCellCollectionViewCell, isDoucbleTap: Bool) {
+           
+        print("Like")
+       }
 
 }
