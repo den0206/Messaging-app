@@ -10,7 +10,10 @@ import UIKit
 import FirebaseFirestore
 
 protocol FeedCellDelegate {
+    
     func handleUsernameTapped(for cell: FeedCellCollectionViewCell)
+    
+    func handleOptionButtonTapped(for cell : FeedCellCollectionViewCell)
 }
 
 class FeedCellCollectionViewCell: UICollectionViewCell {
@@ -41,11 +44,12 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    let optionsButton : UIButton = {
+    lazy var optionsButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("•••", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        button.addTarget(self, action: #selector(optionButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -223,6 +227,16 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+//MARK: Handlers
+
+extension FeedCellCollectionViewCell {
+    
+    @objc func optionButtonTapped() {
+        delegate?.handleOptionButtonTapped(for: self)
     }
     
 }

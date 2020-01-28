@@ -63,6 +63,8 @@ class Post{
 //        }
         userReference = _reference
         
+        postId = _postId
+        
         if let _caption = dictionary[kCAPTION] as? String {
             caption = _caption
         }
@@ -80,7 +82,25 @@ class Post{
     }
     
     
-    
+    func deletePost(post : Post) {
+        
+        guard let imageUrl = post.imageLink else {return}
+        guard let postId = post.postId else {return}
+        
+        storage.reference(forURL: imageUrl).delete { (error) in
+            
+            if error != nil {
+                print("削除できませんでした。")
+            }
+            
+            firebaseReferences(.Post).document(postId).delete { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+
+            }
+        }
+    }
     
 
 }

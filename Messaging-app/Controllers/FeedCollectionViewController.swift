@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 private let reuseIdentifier = "Cell"
 
-class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
     
     var posts = [Post]()
     var post : Post?
@@ -95,8 +95,8 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                 cell.generateCell(post: post, user: post.user!)
             }
         } else {
-            var post = posts[indexPath.item]
-            
+            let post = posts[indexPath.item]
+            cell.post = post
             cell.feedGenerateCell(post: post, reference: post.userReference!)
         }
 
@@ -126,7 +126,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
         
     }
     
-    //MARK: handler
+    //MARK: Refresh
        @objc func handleRefresh() {
            //handle refresh
         self.posts.removeAll(keepingCapacity: false)
@@ -277,10 +277,47 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
 
 }
 
+//MARK: Cell handlers
 
-extension FeedCollectionViewController : FeedCellDelegate {
+
+extension FeedCollectionViewController {
+    
     func handleUsernameTapped(for cell: FeedCellCollectionViewCell) {
-        print("ああ")
+        print("User")
     }
+    
+    func handleOptionButtonTapped(for cell: FeedCellCollectionViewCell) {
+        guard let post = cell.post else {return}
+        
+        
+        if post.userId == FUser.currentID() {
+            //MARK: Delete Action
+            let alertController = UIAlertController(title: "Option", message: nil, preferredStyle: .actionSheet)
+            
+            //MARK: Delete
+            alertController.addAction(UIAlertAction(title: "Delete Post", style: .destructive, handler: { (_) in
+                
+                // delete From Storoge
+                post.deletePost(post: post)
+                
+                if !self.singleViewPost {
+                    self.handleRefresh()
+                }
+                
+            }))
+            
+            //MARK: Eidt Action
+            alertController.addAction(UIAlertAction(title: "Edit Post", style: .default, handler: { (_) in
+                print("Edit")
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
 
 }
