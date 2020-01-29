@@ -124,6 +124,7 @@ class UploadPostViewController: UIViewController, UITextViewDelegate {
                                      kPICTURE : imageLink!,
                                      kLIKE : 0,
                                      kCREATEDAT : creationDate,
+                                     kPOSTID : postId,
                                      kUSERREFERENCE : firebaseReferences(.User).document(FUser.currentID()),
                                      kUSERID : FUser.currentID()] as [String : Any]
                 

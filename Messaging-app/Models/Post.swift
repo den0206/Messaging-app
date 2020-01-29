@@ -26,10 +26,13 @@ class Post{
     var user : FUser?
 
    // for profile
-    init(_postID : String, _user : FUser, dictionary : NSDictionary) {
+    init(_user : FUser, dictionary : NSDictionary) {
         
-        postId = _postID
         user = _user
+        
+        if let _postId = dictionary[kPOSTID] as? String {
+            postId = _postId
+        }
         
         if let _caption = dictionary[kCAPTION] as? String {
             caption = _caption
@@ -50,7 +53,7 @@ class Post{
     
     // for feed
     
-    init(_postId : String, _reference : DocumentReference, dictionary : NSDictionary) {
+    init(_reference : DocumentReference, dictionary : NSDictionary) {
         
 //        _reference.getDocument { (snapshot, error) in
 //            guard let snapshot = snapshot else {return}
@@ -63,7 +66,9 @@ class Post{
 //        }
         userReference = _reference
         
-        postId = _postId
+        if let _postId = dictionary[kPOSTID] as? String {
+            postId = _postId
+        }
         
         if let _caption = dictionary[kCAPTION] as? String {
             caption = _caption

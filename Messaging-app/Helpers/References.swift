@@ -22,3 +22,11 @@ enum References : String {
 func firebaseReferences(_ references : References) -> CollectionReference {
     return Firestore.firestore().collection(references.rawValue)
 }
+
+func userFollowingReference(_ userId : String) -> CollectionReference {
+    return firebaseReferences(.User).document(userId).collection(kUSERFOLLOWING)
+}
+
+func userFolloweredReference(_ userId : String) -> CollectionReference {
+    return firebaseReferences(.User).document(userId).collection(kUSERFOLOWERS)
+}

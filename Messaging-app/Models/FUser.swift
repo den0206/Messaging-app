@@ -205,8 +205,8 @@ class FUser {
     
     func chackUserFollowed(completion : @escaping(Bool) -> ())  {
         
-
-        let doc = firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId)
+        let doc = userFollowingReference(FUser.currentID()).document(self.objectId)
+//        let doc = firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId)
         
         doc.getDocument { (snapshot, error) in
             
@@ -222,14 +222,27 @@ class FUser {
     }
     
     func follow() {
+        let date = dateFormatter().string(from: Date())
         
-        firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId).setData([kUSERID : self.objectId])
-        firebaseReferences(.Follower).document(self.objectId).collection(kUSERFOLOWERS).document(FUser.currentID()).setData([kUSERID : FUser.currentID()])
+        userFollowingReference(FUser.currentID()).document(self.objectId).setData([kCREATEDAT : date])
+        userFolloweredReference(self.objectId).document(FUser.currentID()).setData([kCREATEDAT : date])
+        
+        // add Following Count increment
+        firebaseReferences(.User).document(FUser.currentID()).updateData([kUSERFOLLOWING : FieldValue.increment(Int64(1))])
+        firebaseReferences(.User).document(self.objectId).updateData([kUSERFOLOWERS : FieldValue.increment(Int64(1))])
+        
+
     }
     
     func unFollow(){
-        firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING).document(self.objectId).delete()
-        firebaseReferences(.Follower).document(self.objectId).collection(kUSERFOLOWERS).document(FUser.currentID()).delete()
+        
+        userFollowingReference(FUser.currentID()).document(self.objectId).delete()
+        userFolloweredReference(self.objectId).document(FUser.currentID()).delete()
+        
+        // decrement
+        firebaseReferences(.User).document(FUser.currentID()).updateData([kUSERFOLLOWING : FieldValue.increment(Int64(-1))])
+        firebaseReferences(.User).document(self.objectId).updateData([kUSERFOLOWERS : FieldValue.increment(Int64(-1))])
+
     }
     
 }  // send of User Class
@@ -294,6 +307,8 @@ func fetchUserIDinFiresore(_ userId : String, completiom : @escaping(FUser) -> (
     }
     
 }
+
+
 
 func saveUserLocal(_ user : FUser) {
     UserDefaults.standard.set(userDictionaryFrom(user: user), forKey: kCURRENTUSER)

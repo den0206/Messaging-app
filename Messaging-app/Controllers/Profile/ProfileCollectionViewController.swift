@@ -133,7 +133,7 @@ class ProfileCollectionViewController: UICollectionViewController,  UICollection
                     let postDictionary = doc.data() as NSDictionary
                     
                     // Post initialize
-                    let post = Post(_postID: doc.documentID, _user: self.user!, dictionary: postDictionary)
+                    let post = Post(_user: self.user!, dictionary: postDictionary)
                     self.posts.append(post)
                     
                     
@@ -173,39 +173,41 @@ extension ProfileCollectionViewController : UserProfileHeaderDelegate {
         
         // Following Lable
         
-        firebaseReferences(.Following).document(userId).collection(kUSERFOLLOWING).getDocuments { (snapshot, error) in
+        firebaseReferences(.User).document(userId).getDocument { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
-        
-            if !snapshot.isEmpty {
-                numberOfFollowing = snapshot.documents.count
+            
+            if snapshot.exists {
+                numberOfFollowing = snapshot.data()?[kUSERFOLLOWING] as? Int
             } else {
                 numberOfFollowing = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing ?? 0)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+            attributedText.append(NSAttributedString(string: "followings", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
             
             header.followingLabel.attributedText = attributedText
         }
         
         // Followers Label
         
-        firebaseReferences(.Follower).document(userId).collection(kUSERFOLOWERS).getDocuments { (snapshot, error) in
+        firebaseReferences(.User).document(userId).getDocument { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
-        
-            if !snapshot.isEmpty {
-                numberOfFollwers = snapshot.documents.count
+            
+            if snapshot.exists {
+                numberOfFollwers = snapshot.data()?[kUSERFOLOWERS] as? Int
             } else {
                 numberOfFollwers = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers!)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers ?? 0)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
             
             header.followersLabel.attributedText = attributedText
         }
+        
+
         
         // Post Label
 

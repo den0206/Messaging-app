@@ -20,7 +20,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
     var singleViewPost = false
     var lastDocument : DocumentSnapshot? = nil
     
-    let followingRef = firebaseReferences(.Following).document(FUser.currentID()).collection(kUSERFOLLOWING)
+    let followingRef = userFollowingReference(FUser.currentID())
     var followingIDs = [FUser.currentID()]
     
     var followingListner : ListenerRegistration?
@@ -197,6 +197,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
     //MARK: fetchPost
     
     private func fetchPost() {
+       
         
         firebaseReferences(.Post).whereField(kUSERID, in: followingIDs).order(by: kCREATEDAT, descending: true).limit(to: 5).getDocuments { (snapshot, error) in
             
@@ -208,10 +209,15 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                 for doc in snapshot.documents {
                     let postDictionary = doc.data() as NSDictionary
                     
-                    let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
+                    let post = Post(_reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
+                    
+//                    fetchUserIDinFiresore(postDictionary[kUSERID] as! String) { (user) in
+//                        post = Post(_user: user, dictionary: postDictionary)
+//
+//                    }
+                    
                     self.posts.append(post)
-                    
-                    
+     
                 }
                 print(self.posts.count, self.followingIDs.count)
                 self.lastDocument = snapshot.documents.last
@@ -219,49 +225,8 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
             }
         }
         
-        // get FofllowingIds
         
-//        followingRef.getDocuments { (snapshot, error) in
-//
-//            guard let snapshot = snapshot else {return}
-//            self.collectionView.refreshControl?.endRefreshing()
-//
-//
-//
-//            if !snapshot.isEmpty {
-//
-//                for following in snapshot.documents {
-//                    let followId = following.documentID
-//
-//                    if !self.followingIDs.contains(followId) {
-//                        self.followingIDs.append(followId)
-//                    }
-//                }
-//
-//            }
-//            // make limit later...
-//            firebaseReferences(.Post).whereField(kUSERID, in: self.followingIDs).order(by: kCREATEDAT, descending: true).limit(to: 5).getDocuments { (snapshot, error) in
-//
-//
-//                guard let snapshot = snapshot else {return}
-//
-//
-//                if !snapshot.isEmpty {
-//                    for doc in snapshot.documents {
-//                        let postDictionary = doc.data() as NSDictionary
-//
-//                        let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
-//                        self.posts.append(post)
-//
-//
-//                    }
-//                    print(self.posts.count, self.followingIDs.count)
-//                    self.lastDocument = snapshot.documents.last
-//                    self.collectionView.reloadData()
-//                }
-//            }
-//
-//        }
+
     }
     
     private func fetchMorePosts() {
@@ -276,7 +241,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                     for doc in snapshot.documents {
                         let postDictionary = doc.data() as NSDictionary
                         
-                        let post = Post(_postId: doc.documentID, _reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
+                        let post = Post(_reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
                         self.posts.append(post)
                         
                         
@@ -286,12 +251,8 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                     self.collectionView.reloadData()
                 }
             }
-            
-        
-        
+  
     }
-    
-   
 
 }
 
@@ -342,18 +303,29 @@ extension FeedCollectionViewController {
     func handlePostimageViewTapped(for cell: FeedCellCollectionViewCell, indexPath: IndexPath) {
         // single View mode
         
-        let singleFeedVC = FeedCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        singleFeedVC.singleViewPost = true
-        singleFeedVC.post = posts[indexPath.item]
+        if !singleViewPost {
+            
+            let singleFeedVC = FeedCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            singleFeedVC.singleViewPost = true
+            singleFeedVC.post = posts[indexPath.item]
+            
+            navigationController?.pushViewController(singleFeedVC, animated: true)
+        }
         
-        navigationController?.pushViewController(singleFeedVC, animated: true)
     }
     
   
     
     func hamdleLikeButonnTapped(for cell: FeedCellCollectionViewCell, isDoucbleTap: Bool) {
-           
+        
         print("Like")
-       }
+    }
+    
+    
+  
+
 
 }
+
+
+
