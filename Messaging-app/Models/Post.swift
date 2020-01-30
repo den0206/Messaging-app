@@ -84,6 +84,9 @@ class Post{
         if let _creationDate = dictionary[kCREATEDAT] as? Double{
             createtionDate = Date(timeIntervalSince1970: _creationDate)
         }
+        
+        
+        
     }
     
     
@@ -107,5 +110,17 @@ class Post{
         }
     }
     
+    func postUserSync() -> FUser? {
+        var result : FUser?
+        let sempshoer = DispatchSemaphore(value: 0)
+        
+        fetchUserIDinFiresore(self.userId) { (user) in
+            result = user
+            sempshoer.signal()
+        }
+        sempshoer.wait()
+        
+        return result
+    }
 
 }

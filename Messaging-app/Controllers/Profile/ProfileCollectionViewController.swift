@@ -161,6 +161,7 @@ class ProfileCollectionViewController: UICollectionViewController,  UICollection
 }
 
 extension ProfileCollectionViewController : UserProfileHeaderDelegate {
+  
     
     
     func setUserStatus(header: UserProfileHeader) {
@@ -250,6 +251,15 @@ extension ProfileCollectionViewController : UserProfileHeaderDelegate {
             
         }
     }
+    
+    func followerTapped(header: UserProfileHeader) {
+          print("a")
+      }
+      
+      func followingTapped(header: UserProfileHeader) {
+          print("ing")
+      }
+      
 
     
 }

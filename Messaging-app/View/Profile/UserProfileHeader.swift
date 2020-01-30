@@ -12,6 +12,9 @@ protocol UserProfileHeaderDelegate {
     
     func handleEditProfileEdit(header : UserProfileHeader)
     func setUserStatus(header : UserProfileHeader)
+    
+    func followerTapped(header : UserProfileHeader)
+    func followingTapped(header : UserProfileHeader)
 }
 
 class UserProfileHeader: UICollectionViewCell {
@@ -56,6 +59,11 @@ class UserProfileHeader: UICollectionViewCell {
         attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         label.attributedText = attributedText
         
+        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleForrowersTapped))
+        followTap.numberOfTouchesRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(followTap)
+        
         return label
     }()
     
@@ -68,11 +76,11 @@ class UserProfileHeader: UICollectionViewCell {
         attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         label.attributedText = attributedText
         
-//        // add gesture recognizer
-//        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
-//        followTap.numberOfTapsRequired = 1
-//        label.isUserInteractionEnabled = true
-//        label.addGestureRecognizer(followTap)
+        // add gesture recognizer
+        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
+        followTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(followTap)
         return label
     }()
     
@@ -218,6 +226,13 @@ class UserProfileHeader: UICollectionViewCell {
         delegate?.setUserStatus(header: self)
     }
     
+    @objc func handleForrowersTapped() {
+        delegate?.followerTapped(header: self)
+    }
+    
+    @objc func handleFollowingTapped() {
+        delegate?.followingTapped(header: self)
+    }
     
 }
 

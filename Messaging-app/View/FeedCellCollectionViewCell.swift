@@ -195,6 +195,8 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
     func generateCell(post : Post, user : FUser, indexPath : IndexPath) {
         
         self.indexPath = indexPath
+        self.user = user
+        self.post = post
 
         if user.avatar != "" {
             imageFromData(pictureData: user.avatar) { (avatar) in

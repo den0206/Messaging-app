@@ -110,12 +110,8 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
             
             fetchUserIDinFiresore(post.userId) { (user) in
                 cell.generateCell(post: post, user: user, indexPath: indexPath)
-                cell.user = user
             }
-            cell.post = post
-            
-//            cell.feedGenerateCell(post: post, reference: post.userReference!)
-            
+                        
         }
 
     
@@ -211,14 +207,14 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                     
                     let post = Post(_reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
                     
-//                    fetchUserIDinFiresore(postDictionary[kUSERID] as! String) { (user) in
-//                        post = Post(_user: user, dictionary: postDictionary)
-//
+//                    DispatchQueue.global(qos: .userInitiated).async {
+//                        post.user = post.postUserSync()
 //                    }
                     
                     self.posts.append(post)
      
                 }
+                
                 print(self.posts.count, self.followingIDs.count)
                 self.lastDocument = snapshot.documents.last
                 self.collectionView.reloadData()
