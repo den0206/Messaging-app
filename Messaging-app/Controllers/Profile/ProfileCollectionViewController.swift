@@ -253,11 +253,20 @@ extension ProfileCollectionViewController : UserProfileHeaderDelegate {
     }
     
     func followerTapped(header: UserProfileHeader) {
-          print("a")
+         let followerVC = FollowLikeViewController()
+        followerVC.viewingMode = .Follwers
+        followerVC.user = self.user
+        
+        navigationController?.pushViewController(followerVC, animated: true)
       }
       
       func followingTapped(header: UserProfileHeader) {
-          print("ing")
+          
+        let followingVC = FollowLikeViewController()
+        followingVC.viewingMode = .Following
+        followingVC.user = self.user
+        
+        navigationController?.pushViewController(followingVC, animated: true)
       }
       
 

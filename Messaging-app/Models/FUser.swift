@@ -310,6 +310,8 @@ func fetchUserIDinFiresore(_ userId : String, completiom : @escaping(FUser) -> (
 
 
 
+
+
 func saveUserLocal(_ user : FUser) {
     UserDefaults.standard.set(userDictionaryFrom(user: user), forKey: kCURRENTUSER)
     UserDefaults.standard.synchronize()

@@ -55,15 +55,6 @@ class Post{
     
     init(_reference : DocumentReference, dictionary : NSDictionary) {
         
-//        _reference.getDocument { (snapshot, error) in
-//            guard let snapshot = snapshot else {return}
-//
-//            if snapshot.exists {
-//                let userDictionary = snapshot.data()! as NSDictionary
-//
-//                self.user = FUser(_dictionary: userDictionary)
-//            }
-//        }
         userReference = _reference
         
         if let _postId = dictionary[kPOSTID] as? String {
@@ -76,6 +67,8 @@ class Post{
         
         if let _userID = dictionary[kUSERID] as? String {
             userId = _userID
+            
+             self.syncUser()
         }
         if let _imageLink = dictionary[kPICTURE] as? String {
             imageLink = _imageLink
@@ -85,7 +78,7 @@ class Post{
             createtionDate = Date(timeIntervalSince1970: _creationDate)
         }
         
-        
+       
         
     }
     
@@ -110,17 +103,21 @@ class Post{
         }
     }
     
-    func postUserSync() -> FUser? {
-        var result : FUser?
-        let sempshoer = DispatchSemaphore(value: 0)
-        
-        fetchUserIDinFiresore(self.userId) { (user) in
-            result = user
-            sempshoer.signal()
+    func syncUser() {
+        firebaseReferences(.User).document(userId).getDocument { (snapshot, error) in
+            if let user = snapshot.flatMap({ FUser(_dictionary: $0.data()! as NSDictionary) }) {
+                //Set the user on this Post
+                self.user = user
+            } else {
+                print("Document does not exist")
+            }
+            
+            
         }
-        sempshoer.wait()
         
-        return result
     }
-
 }
+
+
+
+

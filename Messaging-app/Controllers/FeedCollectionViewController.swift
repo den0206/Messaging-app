@@ -206,10 +206,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
                     let postDictionary = doc.data() as NSDictionary
                     
                     let post = Post(_reference: postDictionary[kUSERREFERENCE] as! DocumentReference, dictionary: postDictionary)
-                    
-//                    DispatchQueue.global(qos: .userInitiated).async {
-//                        post.user = post.postUserSync()
-//                    }
+ 
                     
                     self.posts.append(post)
      
@@ -249,6 +246,19 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
             }
   
     }
+    
+    private func syncUser(userid : String) -> FUser? {
+           let semaphore = DispatchSemaphore(value: 0)
+           var resultUser : FUser?
+           
+           fetchUserIDinFiresore(userid) { (user) in
+               resultUser = user
+               semaphore.signal()
+           }
+           semaphore.wait()
+           return resultUser
+       }
+       
 
 }
 

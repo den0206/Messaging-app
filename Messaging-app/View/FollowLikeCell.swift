@@ -8,11 +8,15 @@
 
 import UIKit
 
+protocol FollowLikeCellDelegate {
+    func handleFoLLowtapped(cell : FollowLikeCell)
+}
 
 
 class FollowLikeCell: UITableViewCell {
     
     var user : FUser?
+    var delegate : FollowLikeCellDelegate?
     
     //MARK: Parts
     
@@ -25,19 +29,25 @@ class FollowLikeCell: UITableViewCell {
         return iv
     }()
     
-    let followButton : UIButton = {
+    lazy var followButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Loading", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        button.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    @objc func followButtonTapped() {
+           delegate?.handleFoLLowtapped(cell: self)
+       }
+
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: "Cell")
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 48, height: 48)
+        profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 48, height: 48)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = 48 / 2
         
@@ -46,12 +56,16 @@ class FollowLikeCell: UITableViewCell {
         followButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         followButton.layer.cornerRadius = 3
         
+        
         textLabel?.text = "UserName"
         detailTextLabel?.text = "FUllname"
+        
         self.selectionStyle = .none
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
+        
         textLabel?.frame = CGRect(x: 68, y: textLabel!.frame.origin.y - 2, width: (textLabel?.frame.width)!, height: (textLabel?.frame.height)!)
         textLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         
@@ -63,11 +77,30 @@ class FollowLikeCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+  
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func generateCell() {
+        guard let user = self.user else {return}
+        
+        if user.avatar != "" {
+            imageFromData(pictureData: user.avatar) { (avatar) in
+                profileImageView.image = avatar?.circleMasked
+            }
+        }
+        
+        textLabel?.text = user.firstName
+        detailTextLabel?.text = user.fullname
+        
+        user.chackUserFollowed { (followed) in
+            if followed {
+                self.followButton.configure(didFollow: true)
+            } else {
+                self.followButton.configure(didFollow: false)
+            }
+        }
     }
-
+    
+    
+    
+   
 }

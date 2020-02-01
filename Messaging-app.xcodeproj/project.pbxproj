@@ -239,8 +239,8 @@
 				3ACE0E8623D79AE900C2BFF0 /* FeedCellCollectionViewCell.swift */,
 				3AD29C2323D871F7002DC0EB /* SelectPhotoHeader.swift */,
 				3AD29C2523D87545002DC0EB /* SelectPhotoCell.swift */,
-				3A2ECA9A23DB0602009A70A3 /* Profile */,
 				3ADCBB7E23E30E6E007289BA /* FollowLikeCell.swift */,
+				3A2ECA9A23DB0602009A70A3 /* Profile */,
 			);
 			path = View;
 			sourceTree = "<group>";

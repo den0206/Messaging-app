@@ -170,4 +170,28 @@ func imageFromInitials(firstName: String?, lastName: String?, withBlock: @escapi
     withBlock(img!)
 }
 
+extension UIButton {
+    
+    func configure(didFollow: Bool) {
+        
+        if didFollow {
+            
+            // handle follow user
+            self.setTitle("Following", for: .normal)
+            self.setTitleColor(.black, for: .normal)
+            self.layer.borderWidth = 0.5
+            self.layer.borderColor = UIColor.lightGray.cgColor
+            self.backgroundColor = .white
+            
+        } else {
+            
+            // handle unfollow user
+            self.setTitle("Follow", for: .normal)
+            self.setTitleColor(.white, for: .normal)
+            self.layer.borderWidth = 0
+            self.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        }
+    }
+}
+
 
