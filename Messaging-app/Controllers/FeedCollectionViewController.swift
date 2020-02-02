@@ -12,9 +12,8 @@ import FirebaseFirestore
 private let reuseIdentifier = "Cell"
 
 class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
-   
     
- 
+
     var posts = [Post]()
     var post : Post?
     var singleViewPost = false
@@ -113,8 +112,7 @@ class FeedCollectionViewController: UICollectionViewController, UICollectionView
             }
                         
         }
-
-    
+ 
         return cell
     }
     
@@ -319,18 +317,28 @@ extension FeedCollectionViewController {
         }
         
     }
-    
-  
+
     
     func hamdleLikeButonnTapped(for cell: FeedCellCollectionViewCell, isDoucbleTap: Bool) {
         
-        print("Like")
+        guard let post = cell.post else {return}
+        
+        if post.didLike {
+      
+            post.adjustLike(addLike: false) { (likes) in
+                cell.likesLabel.text = "\(likes) likes"
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+            }
+            
+        } else {
+            post.adjustLike(addLike: true) { (likes) in
+                cell.likesLabel.text = "\(likes) likes"
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+            }
+        }
+        
     }
     
-    
-  
-
-
 }
 
 

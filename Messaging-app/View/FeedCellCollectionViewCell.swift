@@ -18,6 +18,8 @@ protocol FeedCellDelegate {
     func hamdleLikeButonnTapped(for cell : FeedCellCollectionViewCell, isDoucbleTap : Bool)
     
     func handlePostimageViewTapped(for cell : FeedCellCollectionViewCell, indexPath : IndexPath)
+    
+    
 }
 
 class FeedCellCollectionViewCell: UICollectionViewCell {
@@ -110,8 +112,6 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
     lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.text = "3 likes"
-        
  
         
         return label
@@ -213,7 +213,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
 
         postTimeLabel.text = post.createtionDate.timeAgoToDisplay()
 
-
+        configureLike(post: post)
     }
     
     func feedGenerateCell(post : Post, reference : DocumentReference) {
@@ -238,12 +238,40 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         captionLabel.text = post.caption
 
         postTimeLabel.text = post.createtionDate.timeAgoToDisplay()
-
+        
+        configureLike(post: post)
+        
+        
 
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureLike(post : Post) {
+        
+        firebaseReferences(.Post).document(post.postId).addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            
+            if snapshot.exists {
+                let dif = snapshot.data()![kLIKE]
+                self.likesLabel.text = "\(dif!) Likes"
+                
+                post.checkUserLiked { (liked) in
+                    if liked {
+                        post.didLike = true
+                        self.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                        
+                    } else {
+                        post.didLike = false
+                        self.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                    }
+                }
+            }
+        }
+        
+        
     }
     
 }
@@ -267,4 +295,6 @@ extension FeedCellCollectionViewCell {
     @objc func postImageViewTapped() {
         delegate?.handlePostimageViewTapped(for: self, indexPath: indexPath)
     }
+    
+    
 }

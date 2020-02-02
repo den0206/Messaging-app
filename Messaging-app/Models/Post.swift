@@ -15,6 +15,7 @@ class Post{
     var userId : String!
     var imageLink : String!
     var postId : String!
+    var likes : Int!
     
     var createtionDate : Date!
 //    var updateDate : String?
@@ -24,6 +25,7 @@ class Post{
     var userReference : DocumentReference?
 
     var user : FUser?
+    var didLike = false
 
    // for profile
     init(_user : FUser, dictionary : NSDictionary) {
@@ -36,6 +38,10 @@ class Post{
         
         if let _caption = dictionary[kCAPTION] as? String {
             caption = _caption
+        }
+        
+        if let likes = dictionary[kLIKE] as? Int {
+            self.likes = likes
         }
         
         if let _userID = dictionary[kUSERID] as? String {
@@ -63,6 +69,10 @@ class Post{
         
         if let _caption = dictionary[kCAPTION] as? String {
             caption = _caption
+        }
+        
+        if let likes = dictionary[kLIKE] as? Int {
+            self.likes = likes
         }
         
         if let _userID = dictionary[kUSERID] as? String {
@@ -116,6 +126,48 @@ class Post{
         }
         
     }
+    
+    //MARK: Like Area
+    
+    func checkUserLiked(completion : @escaping(Bool) -> ()) {
+        let doc = firebaseReferences(.Post).document(self.postId).collection(kLIKE).document(FUser.currentID())
+        
+        doc.getDocument { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            if snapshot.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+            
+        }
+    }
+    
+    func adjustLike(addLike : Bool, completion : @escaping(Int) -> ()) {
+        
+        guard let postId = self.postId else {return}
+        
+        let date = dateFormatter().string(from: Date())
+        
+        if addLike {
+            firebaseReferences(.Post).document(postId).collection(kLIKE).document(FUser.currentID()).setData([kCREATEDAT : date])
+            firebaseReferences(.Post).document(postId).updateData([kLIKE : FieldValue.increment(Int64(1))])
+            self.didLike = true
+            self.likes += 1
+            completion(self.likes)
+            
+        } else {
+            firebaseReferences(.Post).document(postId).collection(kLIKE).document(FUser.currentID()).delete()
+            firebaseReferences(.Post).document(postId).updateData([kLIKE : FieldValue.increment(Int64(-1))])
+            self.didLike = false
+            self.likes -= 1
+            completion(self.likes)
+        }
+        
+    }
+    
 }
 
 
