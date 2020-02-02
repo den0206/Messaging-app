@@ -12,6 +12,7 @@ import FirebaseFirestore
 private let reuseIdentifier = "Cell"
 
 class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
+   
     
 
     var posts = [Post]()
@@ -338,6 +339,15 @@ extension FeedCollectionViewController {
         }
         
     }
+    
+    func handleCommentButtontapped(for cell: FeedCellCollectionViewCell) {
+        
+        let commentVC = CommentViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        commentVC.post = cell.post
+        navigationController?.pushViewController(commentVC, animated: true)
+        
+    }
+       
     
 }
 

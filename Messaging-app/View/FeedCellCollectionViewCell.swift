@@ -19,6 +19,8 @@ protocol FeedCellDelegate {
     
     func handlePostimageViewTapped(for cell : FeedCellCollectionViewCell, indexPath : IndexPath)
     
+    func handleCommentButtontapped (for cell : FeedCellCollectionViewCell)
+    
     
 }
 
@@ -92,6 +94,7 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "comment"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -296,5 +299,8 @@ extension FeedCellCollectionViewCell {
         delegate?.handlePostimageViewTapped(for: self, indexPath: indexPath)
     }
     
+    @objc func commentButtonTapped() {
+        delegate?.handleCommentButtontapped(for: self)
+    }
     
 }
