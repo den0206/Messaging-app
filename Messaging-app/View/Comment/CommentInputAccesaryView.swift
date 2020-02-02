@@ -67,5 +67,10 @@ class CommentInputAccesaryView: UIView {
         delegate?.didSubmit(comment: comment)
     }
     
+    func clearConnentTextView() {
+        commentTextView.placeholderLabel.isHidden = false
+        commentTextView.text = nil
+    }
+    
     
 }

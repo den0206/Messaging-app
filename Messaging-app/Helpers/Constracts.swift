@@ -98,4 +98,7 @@ public let kUSERREFERENCE  = "UserReference"
 public let kUSERFOLLOWING = "userFollowing"
 public let kUSERFOLOWERS = "userFollowers"
 
+// comment
+public let kCOMMENT = "comment"
+
 

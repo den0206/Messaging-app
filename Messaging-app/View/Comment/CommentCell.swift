@@ -24,6 +24,7 @@ class CommentCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 0
+        
         return label
     }()
     
@@ -40,9 +41,38 @@ class CommentCell: UICollectionViewCell {
         commentLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
     }
     
+    func generateCell(user : FUser, comment : Comment) {
+        self.comment = comment
+        
+        guard let commentText = comment.commentText else {return}
+        guard let createdAt = getCommentTimeStamp() else {return}
+        
+        self.commentLabel.text = "\(user.firstName) \(commentText) \(createdAt)"
+        
+        if user.avatar != "" {
+            imageFromData(pictureData: user.avatar) { (avatar) in
+                profileImageView.image = avatar
+            }
+        }
+        
+        
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func getCommentTimeStamp() -> String? {
+           
+           guard let comment = self.comment else { return nil }
+           
+           let dateFormatter = DateComponentsFormatter()
+           dateFormatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+           dateFormatter.maximumUnitCount = 1
+           dateFormatter.unitsStyle = .abbreviated
+           let now = Date()
+           return dateFormatter.string(from: comment.creationDate, to: now)
+       }
     
     
 }

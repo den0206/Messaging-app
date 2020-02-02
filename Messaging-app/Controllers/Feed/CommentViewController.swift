@@ -21,6 +21,7 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         let containerView = CommentInputAccesaryView(frame: frame)
         
         containerView.delegate = self
+//        containerView.commentTextView.delegate = self
         
         return containerView
     }()
@@ -34,6 +35,8 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         
         // configure collectionviw base
         configureCollectionView()
+        
+        fetchComment()
         
     }
     
@@ -70,6 +73,13 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CommentCell
+        
+        let comment = comments[indexPath.item]
+        
+        fetchUserIDinFiresore(comment.userId) { (user) in
+            cell.generateCell(user: user, comment: comment)
+        }
+        
     
         return cell
     }
@@ -103,18 +113,60 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         return CGSize(width: view.frame.width, height: height)
     }
     
+    //MARK: Fetch Comment
+    private func fetchComment() {
+        guard let postId = post?.postId else {return}
+        
+        firebaseReferences(.Post).document(postId).collection(kCOMMENT).order(by: kCREATEDAT, descending: true).getDocuments { (snapshot, error) in
+            
+            guard let querySnapshot = snapshot else {return}
+            
+            if !querySnapshot.isEmpty {
+                for doc in querySnapshot.documents {
+                    let commentDic = doc.data()
+                    let comment = Comment(dictionary: commentDic)
+                    self.comments.append(comment)
+                }
+                print(self.comments.count)
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     
 
 }
 
 
-extension CommentViewController : CommentInputAccesaryViewDelegate {
+extension CommentViewController : CommentInputAccesaryViewDelegate{
     
-    //MARK: didSubmit
-       
-       func didSubmit(comment: String) {
-            print("post")
+    //MARK: Add Post
+    
+    func didSubmit(comment: String) {
+        
+        let commentId = UUID().uuidString
+        guard let postId = post?.postId else {return}
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
+        let values = [kCREATEDAT : creationDate,
+                     kCOMMENT : comment,
+                     kPOSTID : postId,
+                     kUSERID : FUser.currentID()] as [String : Any]
+        
+        firebaseReferences(.Post).document(postId).collection(kCOMMENT).document(commentId).setData(values) { (error) in
+            
+            if error != nil {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            self.containerView.clearConnentTextView()
+            
+            
         }
         
         
+    }
+    
+    
 }
