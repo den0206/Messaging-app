@@ -32,22 +32,25 @@ class FollowLikeViewController: UITableViewController, FollowLikeCellDelegate {
     
     var user : FUser?
     var users = [FUser]()
-    var relationIds : [String] = []
+    var relationIds : [String] = ["Id"]
+    var post : Post?
     
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.register(FollowLikeCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorColor = .clear
         
         configureTitle()
         
-        fetchUsers()
         
-        tableView.separatorColor = .clear
-
-     
+        fetchUsers()
+       
+        
     }
+    
+    
 
     // MARK: - Table view data source
 
@@ -97,38 +100,42 @@ class FollowLikeViewController: UITableViewController, FollowLikeCellDelegate {
     
     private func getDatebaseReference(userObject : FUser?) -> CollectionReference? {
         guard let viewingMode = self.viewingMode else {return nil}
+        guard let postId = self.post?.postId else {return nil}
         
         switch viewingMode {
             // from Profile
         case .Following: return userFollowingReference(userObject!.objectId)
         case .Follwers : return userFolloweredReference(userObject!.objectId)
-            // Post
-        case .Likes : return nil
+            // Post Like
+        case .Likes : return firebaseReferences(.Post).document(postId).collection(kLIKE)
         }
     }
     
     //MARK: FetchUsers
     
+
+    
+    
     private func fetchUsers() {
         guard let followLikeRef = getDatebaseReference(userObject: self.user) else {return}
         guard let viewingMode = self.viewingMode else {return}
-        
+
         switch viewingMode {
-            
+
         //MARK: ReletionshipUsers
-        case .Following , .Follwers:
+        case .Following , .Follwers, .Likes:
             // get RelationIds
-            
+
             followLikeRef.getDocuments { (snapshot, error) in
                 guard let snapshot = snapshot else {return}
-                
+
                 if !snapshot.isEmpty {
                     // get RelationIds
                     snapshot.documents.forEach { (snapshot) in
                         let relationId = snapshot.documentID
                         self.relationIds.append(relationId)
                     }
-                    
+
                     // get UserObject
                     firebaseReferences(.User).whereField(kOBJECTID, in: self.relationIds).getDocuments { (snapshot, error) in
                         guard let snapshot = snapshot else {return}
@@ -137,20 +144,16 @@ class FollowLikeViewController: UITableViewController, FollowLikeCellDelegate {
                                 let userDictionary = doc.data() as NSDictionary
                                 let user = FUser(_dictionary: userDictionary)
                                 self.users.append(user)
-                                
+
                             }
                             self.tableView.reloadData()
-                            
+
                         }
                     }
-                    
+
                 }
             }
-            
-            
-        //MARK: LikeUsers
-        case .Likes:
-            return
+
         }
     }
     

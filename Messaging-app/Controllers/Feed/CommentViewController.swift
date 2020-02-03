@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 private let reuseIdentifier = "CommentCell"
 
@@ -15,6 +16,8 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
  
     var post : Post?
     var comments = [Comment]()
+    
+    var lastDocument : DocumentSnapshot? = nil
     
     lazy var containerView: CommentInputAccesaryView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
@@ -36,7 +39,7 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         // configure collectionviw base
         configureCollectionView()
         
-        fetchComment()
+        fetchfirstComment()
         
     }
     
@@ -84,6 +87,13 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if comments.count >= 10 && indexPath.item == (self.comments.count - 1 ) {
+            fetchMoreComment()
+        }
+    }
+    
     //MARK: Helper
     
     private func configureCollectionView() {
@@ -114,10 +124,10 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
     }
     
     //MARK: Fetch Comment
-    private func fetchComment() {
+    private func fetchfirstComment() {
         guard let postId = post?.postId else {return}
         
-        firebaseReferences(.Post).document(postId).collection(kCOMMENT).order(by: kCREATEDAT, descending: true).getDocuments { (snapshot, error) in
+        firebaseReferences(.Post).document(postId).collection(kCOMMENT).order(by: kCREATEDAT, descending: true).limit(to: 10).getDocuments { (snapshot, error) in
             
             guard let querySnapshot = snapshot else {return}
             
@@ -128,9 +138,31 @@ class CommentViewController: UICollectionViewController ,UICollectionViewDelegat
                     self.comments.append(comment)
                 }
                 print(self.comments.count)
+                self.lastDocument = querySnapshot.documents.last
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    private func fetchMoreComment() {
+        guard let postId = post?.postId else {return}
+        guard let lastDocument = lastDocument else {return}
+        
+        firebaseReferences(.Post).document(postId).collection(kCOMMENT).order(by: kCREATEDAT, descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            if !snapshot.isEmpty {
+                for doc in snapshot.documents {
+                    let commentDic = doc.data()
+                    let comment = Comment(dictionary: commentDic)
+                    self.comments.append(comment)
+                }
+                self.lastDocument = snapshot.documents.last
+                self.collectionView.reloadData()
+            }
+        }
+        
     }
     
     
