@@ -32,7 +32,7 @@ class FollowLikeViewController: UITableViewController, FollowLikeCellDelegate {
     
     var user : FUser?
     var users = [FUser]()
-    var relationIds : [String] = ["Id"]
+    var relationIds : [String] = []
     var post : Post?
     
     
@@ -100,14 +100,17 @@ class FollowLikeViewController: UITableViewController, FollowLikeCellDelegate {
     
     private func getDatebaseReference(userObject : FUser?) -> CollectionReference? {
         guard let viewingMode = self.viewingMode else {return nil}
-        guard let postId = self.post?.postId else {return nil}
+        
         
         switch viewingMode {
-            // from Profile
+        // from Profile
         case .Following: return userFollowingReference(userObject!.objectId)
         case .Follwers : return userFolloweredReference(userObject!.objectId)
-            // Post Like
-        case .Likes : return firebaseReferences(.Post).document(postId).collection(kLIKE)
+        
+        // Post Like
+        case .Likes :
+            guard let postId = self.post?.postId else {return nil}
+            return firebaseReferences(.Post).document(postId).collection(kLIKE)
         }
     }
     

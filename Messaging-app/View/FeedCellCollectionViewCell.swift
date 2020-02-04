@@ -21,6 +21,8 @@ protocol FeedCellDelegate {
     
     func handleCommentButtontapped (for cell : FeedCellCollectionViewCell)
     
+    func handleLikelabelTapped(for cell : FeedCellCollectionViewCell)
+    
     
 }
 
@@ -115,8 +117,11 @@ class FeedCellCollectionViewCell: UICollectionViewCell {
     lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(likeLabeltapped))
+        tapgesture.numberOfTouchesRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapgesture)
  
-        
         return label
     }()
     
@@ -301,6 +306,10 @@ extension FeedCellCollectionViewCell {
     
     @objc func commentButtonTapped() {
         delegate?.handleCommentButtontapped(for: self)
+    }
+    
+    @objc func likeLabeltapped() {
+        delegate?.handleLikelabelTapped(for: self)
     }
     
 }

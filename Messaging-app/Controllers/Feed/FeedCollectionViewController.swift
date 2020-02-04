@@ -12,7 +12,6 @@ import FirebaseFirestore
 private let reuseIdentifier = "Cell"
 
 class FeedCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
-   
     
 
     var posts = [Post]()
@@ -318,6 +317,16 @@ extension FeedCollectionViewController {
         }
         
     }
+    
+    func handleLikelabelTapped(for cell: FeedCellCollectionViewCell) {
+        guard let post = cell.post else {return}
+        
+        let likeUsersVC = FollowLikeViewController()
+        likeUsersVC.viewingMode = .Likes
+        likeUsersVC.post = post
+        navigationController?.pushViewController(likeUsersVC, animated: true)
+     }
+     
 
     
     func hamdleLikeButonnTapped(for cell: FeedCellCollectionViewCell, isDoucbleTap: Bool) {

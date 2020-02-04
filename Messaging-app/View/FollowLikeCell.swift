@@ -91,13 +91,20 @@ class FollowLikeCell: UITableViewCell {
         textLabel?.text = user.firstName
         detailTextLabel?.text = user.fullname
         
-        user.chackUserFollowed { (followed) in
-            if followed {
-                self.followButton.configure(didFollow: true)
-            } else {
-                self.followButton.configure(didFollow: false)
+        if user.objectId == FUser.currentID() {
+            self.followButton.isHidden = true
+            self.followButton.isEnabled = false
+        } else {
+            user.chackUserFollowed { (followed) in
+                if followed {
+                    self.followButton.configure(didFollow: true)
+                } else {
+                    self.followButton.configure(didFollow: false)
+                }
             }
         }
+        
+        
     }
     
     
