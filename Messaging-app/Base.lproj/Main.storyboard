@@ -413,6 +413,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="GZ2-6D-n4b" kind="relationship" relationship="viewControllers" id="59r-AI-20A"/>
+                        <segue destination="3do-2D-Xbh" kind="relationship" relationship="viewControllers" id="9e9-e7-83g"/>
                         <segue destination="DmE-Bf-aqp" kind="relationship" relationship="viewControllers" id="Kyb-n9-V5H"/>
                         <segue destination="GGn-uG-75T" kind="relationship" relationship="viewControllers" id="d8b-P3-kgm"/>
                     </connections>
@@ -848,6 +849,22 @@
             </objects>
             <point key="canvasLocation" x="2576.811594202899" y="598.66071428571422"/>
         </scene>
+        <!--Gym-->
+        <scene sceneID="4Xn-5n-mtk">
+            <objects>
+                <viewController id="3do-2D-Xbh" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TA9-st-wrl">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="qM1-va-g6h"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Gym" image="location" id="c6T-fI-gPr"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DvS-Hq-pRp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2597" y="1344"/>
+        </scene>
         <!--Item-->
         <scene sceneID="8AJ-qa-9jr">
             <objects>
@@ -872,6 +889,7 @@
         <image name="avatarPlaceholder" width="101" height="101"/>
         <image name="comment" width="22" height="19"/>
         <image name="home_selected" width="22" height="22"/>
+        <image name="location" width="25" height="25"/>
         <image name="settings" width="25" height="25"/>
     </resources>
 </document>
